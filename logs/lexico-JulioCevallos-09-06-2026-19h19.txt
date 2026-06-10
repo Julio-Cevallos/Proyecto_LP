@@ -1,0 +1,7 @@
+
+ERRORES LEXICOS ENCONTRADOS:
+Caracter ilegal '@' en la linea 7
+Caracter ilegal '#' en la linea 8
+Caracter ilegal '?' en la linea 9
+Caracter ilegal '$' en la linea 10
+Caracter ilegal '~' en la linea 11
