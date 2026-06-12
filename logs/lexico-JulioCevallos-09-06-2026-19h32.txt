@@ -1,4 +1,0 @@
-
-ERRORES LEXICOS ENCONTRADOS:
-Caracter ilegal '(' en la linea 27
-Caracter ilegal ')' en la linea 27
