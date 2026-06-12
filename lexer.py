@@ -2,37 +2,47 @@ import ply.lex as lex
 from datetime import datetime
 import os
 
-#====================================
-#=== INICIO PARTE: JULIO CEVALLOS ===
-#====================================
+#==================================================================
+#=== INICIO PARTE: JULIO CEVALLOS - CAMBIOS POR: STEVEN BARZOLA ===
+#==================================================================
 
 # Diccionario de palabras reservadas asignadas 
 reserved= {
     'int': 'INT',
     'float': 'FLOAT',
-    'double': 'DOUBLE',
     'char': 'CHAR',
     'string': 'STRING',
     'bool': 'BOOL',
     'true': 'TRUE',
-    'false': 'FALSE'
+    'false': 'FALSE',
+    'void': 'VOID',
+    'if': 'IF',
+    'else': 'ELSE',
+    'while': 'WHILE',
+    'for': 'FOR', 
+    'return': 'RETURN',
+    'new': 'NEW',
+    'List': 'LIST',
+    'Dictionary': 'DICTIONARY'
 }
 
 # Lista de TOKENS
-tokens= [
+tokens= (
     'IDENTIFICADOR',
-    'NUMERO_ENTERO',
-    'NUMERO_FLOTANTE',
+    'ENTERO',
+    'FLOTANTE',
     'CADENA',
     'CARACTER',
     # Operadores Aritmeticos
     'MAS', 'MENOS', 'MULT', 'DIV', 'MOD',
+    # Operadores Logicos
+    'AND', 'OR', 'NOT',
     # Operadores relacionales
     'IGUAL_IGUAL', 'DIFERENTE', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'MENOR', 'MAYOR',
     # Asignacion y Delimitadores base
     'IGUAL', 'PUNTO_COMA', 'COMA', 'PUNTO', 'PARENTESIS_IZQ', 'PARENTESIS_DER', 
     'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER'
-] + list(reserved.values())
+) + tuple(reserved.values())
 
 # Expresiones Regulares para Operadores Aritmeticos
 t_MAS= r'\+'
@@ -41,7 +51,12 @@ t_MULT= r'\*'
 t_DIV= r'/'
 t_MOD= r'%'
 
-# Expreisones Regulares para Operadores Relacionales
+#Expresiones Regulares para Operadores Logicos
+t_AND= r'&&'
+t_OR= r'\|\|'
+t_NOT= r'!'
+
+# Expresiones Regulares para Operadores Relacionales
 t_IGUAL_IGUAL=r'=='
 t_DIFERENTE= r'!='
 t_MENOR_IGUAL= r'<='
@@ -62,12 +77,12 @@ t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
 
 # Reglas con funciones con TOKENS complejos (con orden de prioridad)
-def t_NUMERO_FLOTANTE(t):
+def t_FLOTANTE(t):
     r'\d+\.\d+'
     t.value= float(t.value)
     return t
 
-def t_NUMERO_ENTERO(t):
+def t_ENTERO(t):
     r'\d+'
     t.value=int(t.value)
     return t
@@ -106,9 +121,13 @@ def t_COMENTARIO_MULTILINEA(t):
     t.lexer.lineno+= t.value.count('\n')
     pass
 
-def t_newline(t):
+def t_NUEVA_LINEA(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+
+#======================================
+#==== FIN CAMBIOS: STEVEN BARZOLA =====
+#======================================
 
 # Regla para manejar errores
 errores_lexicos= []
@@ -120,9 +139,9 @@ def t_error(t):
 # Construccion del Analizador Lexico
 lexer= lex.lex()
 
-#=============================================
-#=== FUNCION PARA GENERAR LOGS AUTOMATICOS ===
-#=============================================
+#===========================================================
+#=== FUNCION PARA GENERAR LOGS AUTOMATICOS - SOLO LEXICO ===
+#===========================================================
 
 def validar_algoritmo(archivo_codigo, nombre_desarrollador):
     global errores_lexicos
@@ -140,7 +159,7 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
         resultado_log += f"Token:{tok.type}, Valor: '{tok.value}', Linea: {tok.lineno}\n"
     
     #Registrar Errores
-    resultado_log= "\nERRORES LEXICOS ENCONTRADOS:\n"
+    resultado_log+= "\nERRORES LEXICOS ENCONTRADOS:\n"
     if errores_lexicos:
         for err in errores_lexicos:
             resultado_log += err + "\n"
@@ -161,4 +180,5 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
 #========== EJECUCICION DE PRUEBAS ===========
 #=============================================
 
-validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
+#validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
+validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
