@@ -64,3 +64,11 @@ for (string s = "inicio"; s != "fin"; s = s + "x") {
 
 // Error 3: estructura de datos con tipo no reconocido
 Stack<int> pila = new Stack<int>();
+
+// ── 9. ERRORES LEXICOS INTENCIONALES ──────────────────────────
+
+int $precio = 100;
+
+float @tasa = 0.5;
+
+string #nombre = "Issac";
