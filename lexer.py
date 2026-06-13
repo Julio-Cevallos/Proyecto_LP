@@ -23,7 +23,9 @@ reserved= {
     'return': 'RETURN',
     'new': 'NEW',
     'List': 'LIST',
-    'Dictionary': 'DICTIONARY'
+    'Dictionary': 'DICTIONARY',
+    # ── AGREGADO POR ISSAC MAZA ──
+    'var':'VAR',
 }
 
 # Lista de TOKENS
@@ -41,7 +43,9 @@ tokens= (
     'IGUAL_IGUAL', 'DIFERENTE', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'MENOR', 'MAYOR',
     # Asignacion y Delimitadores base
     'IGUAL', 'PUNTO_COMA', 'COMA', 'PUNTO', 'PARENTESIS_IZQ', 'PARENTESIS_DER', 
-    'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER'
+    'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
+    # ── AGREGADO POR ISSAC MAZA ──
+    'FLECHA_LAMBDA',
 ) + tuple(reserved.values())
 
 # Expresiones Regulares para Operadores Aritmeticos
@@ -75,6 +79,21 @@ t_LLAVE_IZQ = r'\{'
 t_LLAVE_DER = r'\}'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
+
+#=============================================
+#=== INICIO PARTE: ISSAC MAZA ================
+#=============================================
+ 
+# Token para funciones lambda/expresion corta
+# Ejemplo: int Duplicar(int n) => n*2
+# IMPORTANTE: debe ir ANTES de t_IGUAL para que => no se tokenice como = y >
+def t_FLECHA_LAMBDA(t):
+    r'=>'
+    return t
+ 
+#=============================================
+#==== FIN PARTE: ISSAC MAZA ==================
+#=============================================
 
 # Reglas con funciones con TOKENS complejos (con orden de prioridad)
 def t_FLOTANTE(t):
@@ -181,4 +200,5 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
 #=============================================
 
 #validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
-validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
+#validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
+validar_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
