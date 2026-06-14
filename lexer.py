@@ -24,8 +24,14 @@ reserved= {
     'new': 'NEW',
     'List': 'LIST',
     'Dictionary': 'DICTIONARY',
+    'class': 'CLASS',
+    'static': 'STATIC',
+    'public': 'PUBLIC',
+    'private': 'PRIVATE',
+    'using': 'USING',
+    'namespace': 'NAMESPACE',
     # ── AGREGADO POR ISSAC MAZA ──
-    'var':'VAR',
+    'var':'VAR'
 }
 
 # Lista de TOKENS
@@ -45,7 +51,7 @@ tokens= (
     'IGUAL', 'PUNTO_COMA', 'COMA', 'PUNTO', 'PARENTESIS_IZQ', 'PARENTESIS_DER', 
     'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
     # ── AGREGADO POR ISSAC MAZA ──
-    'FLECHA_LAMBDA',
+    'FLECHA_LAMBDA'
 ) + tuple(reserved.values())
 
 # Expresiones Regulares para Operadores Aritmeticos
@@ -201,4 +207,5 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
 
 #validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
 #validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
-validar_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
+#validar_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
+validar_algoritmo("algoritmo_clases.cs", "StevenBarzola")
