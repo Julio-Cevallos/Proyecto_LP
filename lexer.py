@@ -24,9 +24,17 @@ reserved= {
     'new': 'NEW',
     'List': 'LIST',
     'Dictionary': 'DICTIONARY',
-    'console': 'CONSOLE',
+    'class': 'CLASS',
+    'static': 'STATIC',
+    'public': 'PUBLIC',
+    'private': 'PRIVATE',
+    'using': 'USING',
+    'namespace': 'NAMESPACE',
+    'var': 'VAR',
+    'Console': 'CONSOLE',
     'Write': 'WRITE',
-    'Readline': 'READLINE',
+    'WriteLine': 'WRITELINE',
+    'ReadLine': 'READLINE'
 }
 
 # Lista de TOKENS
@@ -44,7 +52,9 @@ tokens= (
     'IGUAL_IGUAL', 'DIFERENTE', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'MENOR', 'MAYOR',
     # Asignacion y Delimitadores base
     'IGUAL', 'PUNTO_COMA', 'COMA', 'PUNTO', 'PARENTESIS_IZQ', 'PARENTESIS_DER', 
-    'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER'
+    'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
+    # ── AGREGADO POR ISSAC MAZA ──
+    'FLECHA_LAMBDA'
 ) + tuple(reserved.values())
 
 # Expresiones Regulares para Operadores Aritmeticos
@@ -78,6 +88,21 @@ t_LLAVE_IZQ = r'\{'
 t_LLAVE_DER = r'\}'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
+
+#=============================================
+#=== INICIO PARTE: ISSAC MAZA ================
+#=============================================
+ 
+# Token para funciones lambda/expresion corta
+# Ejemplo: int Duplicar(int n) => n*2
+# IMPORTANTE: debe ir ANTES de t_IGUAL para que => no se tokenice como = y >
+def t_FLECHA_LAMBDA(t):
+    r'=>'
+    return t
+ 
+#=============================================
+#==== FIN PARTE: ISSAC MAZA ==================
+#=============================================
 
 # Reglas con funciones con TOKENS complejos (con orden de prioridad)
 def t_FLOTANTE(t):
@@ -183,5 +208,8 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
 #========== EJECUCICION DE PRUEBAS ===========
 #=============================================
 
+# Descomenta la línea del archivo que quieras probar
 validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
 #validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
+#validar_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
+#validar_algoritmo("algoritmo_clases.cs", "StevenBarzola")
