@@ -23,7 +23,10 @@ reserved= {
     'return': 'RETURN',
     'new': 'NEW',
     'List': 'LIST',
-    'Dictionary': 'DICTIONARY'
+    'Dictionary': 'DICTIONARY',
+    'console': 'CONSOLE',
+    'Write': 'WRITE',
+    'Readline': 'READLINE',
 }
 
 # Lista de TOKENS
@@ -180,5 +183,5 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
 #========== EJECUCICION DE PRUEBAS ===========
 #=============================================
 
-#validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
-validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
+validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
+#validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
