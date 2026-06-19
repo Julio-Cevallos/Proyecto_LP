@@ -1,0 +1,3155 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    CLASS
+    DICTIONARY
+    ELSE
+    FLECHA_LAMBDA
+    LIST
+    NAMESPACE
+    PRIVATE
+    PUBLIC
+    RETURN
+    USING
+    VAR
+
+Grammar
+
+Rule 0     S' -> programa
+Rule 1     programa -> lista_sentencias
+Rule 2     lista_sentencias -> sentencia lista_sentencias
+Rule 3     lista_sentencias -> sentencia
+Rule 4     sentencia -> declaracion
+Rule 5     sentencia -> asignacion
+Rule 6     sentencia -> impresion
+Rule 7     sentencia -> bucle_while
+Rule 8     sentencia -> declaracion_arreglo
+Rule 9     sentencia -> metodo_main
+Rule 10    sentencia -> estructura_control_companeros
+Rule 11    estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+Rule 12    estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque
+Rule 13    tipo_primitivo -> INT
+Rule 14    tipo_primitivo -> FLOAT
+Rule 15    tipo_primitivo -> CHAR
+Rule 16    tipo_primitivo -> STRING
+Rule 17    tipo_primitivo -> BOOL
+Rule 18    declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA
+Rule 19    lista_declaraciones -> lista_declaraciones COMA elemento_declaracion
+Rule 20    lista_declaraciones -> elemento_declaracion
+Rule 21    elemento_declaracion -> IDENTIFICADOR IGUAL expresion
+Rule 22    elemento_declaracion -> IDENTIFICADOR
+Rule 23    asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA
+Rule 24    impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+Rule 25    impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+Rule 26    expresion -> expresion MAS expresion
+Rule 27    expresion -> expresion MENOS expresion
+Rule 28    expresion -> expresion MULT expresion
+Rule 29    expresion -> expresion DIV expresion
+Rule 30    expresion -> expresion MOD expresion
+Rule 31    expresion -> expresion IGUAL_IGUAL expresion
+Rule 32    expresion -> expresion DIFERENTE expresion
+Rule 33    expresion -> expresion MENOR expresion
+Rule 34    expresion -> expresion MENOR_IGUAL expresion
+Rule 35    expresion -> expresion MAYOR expresion
+Rule 36    expresion -> expresion MAYOR_IGUAL expresion
+Rule 37    expresion -> expresion AND expresion
+Rule 38    expresion -> expresion OR expresion
+Rule 39    expresion -> NOT expresion
+Rule 40    expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER
+Rule 41    expresion -> ENTERO
+Rule 42    expresion -> FLOTANTE
+Rule 43    expresion -> CADENA
+Rule 44    expresion -> CARACTER
+Rule 45    expresion -> IDENTIFICADOR
+Rule 46    expresion -> TRUE
+Rule 47    expresion -> FALSE
+Rule 48    expresion -> lectura_teclado
+Rule 49    lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+Rule 50    bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+Rule 51    bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER
+Rule 52    declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA
+Rule 53    declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+Rule 54    metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+
+Terminals, with rules where they appear
+
+AND                  : 37
+BOOL                 : 17
+CADENA               : 43
+CARACTER             : 44
+CHAR                 : 15
+CLASS                : 
+COMA                 : 19
+CONSOLE              : 24 25 49
+CORCHETE_DER         : 52 53 53
+CORCHETE_IZQ         : 52 53 53
+DICTIONARY           : 
+DIFERENTE            : 32
+DIV                  : 29
+ELSE                 : 
+ENTERO               : 41 53
+FALSE                : 47
+FLECHA_LAMBDA        : 
+FLOAT                : 14
+FLOTANTE             : 42
+FOR                  : 12
+IDENTIFICADOR        : 21 22 23 45 52 53 54
+IF                   : 11
+IGUAL                : 21 23 53
+IGUAL_IGUAL          : 31
+INT                  : 13
+LIST                 : 
+LLAVE_DER            : 51
+LLAVE_IZQ            : 51
+MAS                  : 26
+MAYOR                : 35
+MAYOR_IGUAL          : 36
+MENOR                : 33
+MENOR_IGUAL          : 34
+MENOS                : 27
+MOD                  : 30
+MULT                 : 28
+NAMESPACE            : 
+NEW                  : 53
+NOT                  : 39
+OR                   : 38
+PARENTESIS_DER       : 11 12 24 25 40 49 50 54
+PARENTESIS_IZQ       : 11 12 24 25 40 49 50 54
+PRIVATE              : 
+PUBLIC               : 
+PUNTO                : 24 25 49
+PUNTO_COMA           : 12 18 23 24 25 52 53
+READLINE             : 49
+RETURN               : 
+STATIC               : 54
+STRING               : 16
+TRUE                 : 46
+USING                : 
+VAR                  : 
+VOID                 : 54
+WHILE                : 50
+WRITE                : 24
+WRITELINE            : 25
+error                : 
+
+Nonterminals, with rules where they appear
+
+asignacion           : 5 12 12
+bloque               : 11 12 50 54
+bucle_while          : 7
+declaracion          : 4
+declaracion_arreglo  : 8
+elemento_declaracion : 19 20
+estructura_control_companeros : 10
+expresion            : 11 12 21 23 24 25 26 26 27 27 28 28 29 29 30 30 31 31 32 32 33 33 34 34 35 35 36 36 37 37 38 38 39 40 50
+impresion            : 6
+lectura_teclado      : 48
+lista_declaraciones  : 18 19
+lista_sentencias     : 1 2 51
+metodo_main          : 9
+programa             : 0
+sentencia            : 2 3
+tipo_primitivo       : 18 52 53 53
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programa
+    (1) programa -> . lista_sentencias
+    (2) lista_sentencias -> . sentencia lista_sentencias
+    (3) lista_sentencias -> . sentencia
+    (4) sentencia -> . declaracion
+    (5) sentencia -> . asignacion
+    (6) sentencia -> . impresion
+    (7) sentencia -> . bucle_while
+    (8) sentencia -> . declaracion_arreglo
+    (9) sentencia -> . metodo_main
+    (10) sentencia -> . estructura_control_companeros
+    (18) declaracion -> . tipo_primitivo lista_declaraciones PUNTO_COMA
+    (23) asignacion -> . IDENTIFICADOR IGUAL expresion PUNTO_COMA
+    (24) impresion -> . CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (25) impresion -> . CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (50) bucle_while -> . WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+    (52) declaracion_arreglo -> . tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA
+    (53) declaracion_arreglo -> . tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+    (54) metodo_main -> . STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+    (11) estructura_control_companeros -> . IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+    (12) estructura_control_companeros -> . FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque
+    (13) tipo_primitivo -> . INT
+    (14) tipo_primitivo -> . FLOAT
+    (15) tipo_primitivo -> . CHAR
+    (16) tipo_primitivo -> . STRING
+    (17) tipo_primitivo -> . BOOL
+
+    IDENTIFICADOR   shift and go to state 12
+    CONSOLE         shift and go to state 13
+    WHILE           shift and go to state 14
+    STATIC          shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    INT             shift and go to state 18
+    FLOAT           shift and go to state 19
+    CHAR            shift and go to state 20
+    STRING          shift and go to state 21
+    BOOL            shift and go to state 22
+
+    programa                       shift and go to state 1
+    lista_sentencias               shift and go to state 2
+    sentencia                      shift and go to state 3
+    declaracion                    shift and go to state 4
+    asignacion                     shift and go to state 5
+    impresion                      shift and go to state 6
+    bucle_while                    shift and go to state 7
+    declaracion_arreglo            shift and go to state 8
+    metodo_main                    shift and go to state 9
+    estructura_control_companeros  shift and go to state 10
+    tipo_primitivo                 shift and go to state 11
+
+state 1
+
+    (0) S' -> programa .
+
+
+
+state 2
+
+    (1) programa -> lista_sentencias .
+
+    $end            reduce using rule 1 (programa -> lista_sentencias .)
+
+
+state 3
+
+    (2) lista_sentencias -> sentencia . lista_sentencias
+    (3) lista_sentencias -> sentencia .
+    (2) lista_sentencias -> . sentencia lista_sentencias
+    (3) lista_sentencias -> . sentencia
+    (4) sentencia -> . declaracion
+    (5) sentencia -> . asignacion
+    (6) sentencia -> . impresion
+    (7) sentencia -> . bucle_while
+    (8) sentencia -> . declaracion_arreglo
+    (9) sentencia -> . metodo_main
+    (10) sentencia -> . estructura_control_companeros
+    (18) declaracion -> . tipo_primitivo lista_declaraciones PUNTO_COMA
+    (23) asignacion -> . IDENTIFICADOR IGUAL expresion PUNTO_COMA
+    (24) impresion -> . CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (25) impresion -> . CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (50) bucle_while -> . WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+    (52) declaracion_arreglo -> . tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA
+    (53) declaracion_arreglo -> . tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+    (54) metodo_main -> . STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+    (11) estructura_control_companeros -> . IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+    (12) estructura_control_companeros -> . FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque
+    (13) tipo_primitivo -> . INT
+    (14) tipo_primitivo -> . FLOAT
+    (15) tipo_primitivo -> . CHAR
+    (16) tipo_primitivo -> . STRING
+    (17) tipo_primitivo -> . BOOL
+
+    $end            reduce using rule 3 (lista_sentencias -> sentencia .)
+    LLAVE_DER       reduce using rule 3 (lista_sentencias -> sentencia .)
+    IDENTIFICADOR   shift and go to state 12
+    CONSOLE         shift and go to state 13
+    WHILE           shift and go to state 14
+    STATIC          shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    INT             shift and go to state 18
+    FLOAT           shift and go to state 19
+    CHAR            shift and go to state 20
+    STRING          shift and go to state 21
+    BOOL            shift and go to state 22
+
+    sentencia                      shift and go to state 3
+    lista_sentencias               shift and go to state 23
+    declaracion                    shift and go to state 4
+    asignacion                     shift and go to state 5
+    impresion                      shift and go to state 6
+    bucle_while                    shift and go to state 7
+    declaracion_arreglo            shift and go to state 8
+    metodo_main                    shift and go to state 9
+    estructura_control_companeros  shift and go to state 10
+    tipo_primitivo                 shift and go to state 11
+
+state 4
+
+    (4) sentencia -> declaracion .
+
+    IDENTIFICADOR   reduce using rule 4 (sentencia -> declaracion .)
+    CONSOLE         reduce using rule 4 (sentencia -> declaracion .)
+    WHILE           reduce using rule 4 (sentencia -> declaracion .)
+    STATIC          reduce using rule 4 (sentencia -> declaracion .)
+    IF              reduce using rule 4 (sentencia -> declaracion .)
+    FOR             reduce using rule 4 (sentencia -> declaracion .)
+    INT             reduce using rule 4 (sentencia -> declaracion .)
+    FLOAT           reduce using rule 4 (sentencia -> declaracion .)
+    CHAR            reduce using rule 4 (sentencia -> declaracion .)
+    STRING          reduce using rule 4 (sentencia -> declaracion .)
+    BOOL            reduce using rule 4 (sentencia -> declaracion .)
+    $end            reduce using rule 4 (sentencia -> declaracion .)
+    LLAVE_DER       reduce using rule 4 (sentencia -> declaracion .)
+
+
+state 5
+
+    (5) sentencia -> asignacion .
+
+    IDENTIFICADOR   reduce using rule 5 (sentencia -> asignacion .)
+    CONSOLE         reduce using rule 5 (sentencia -> asignacion .)
+    WHILE           reduce using rule 5 (sentencia -> asignacion .)
+    STATIC          reduce using rule 5 (sentencia -> asignacion .)
+    IF              reduce using rule 5 (sentencia -> asignacion .)
+    FOR             reduce using rule 5 (sentencia -> asignacion .)
+    INT             reduce using rule 5 (sentencia -> asignacion .)
+    FLOAT           reduce using rule 5 (sentencia -> asignacion .)
+    CHAR            reduce using rule 5 (sentencia -> asignacion .)
+    STRING          reduce using rule 5 (sentencia -> asignacion .)
+    BOOL            reduce using rule 5 (sentencia -> asignacion .)
+    $end            reduce using rule 5 (sentencia -> asignacion .)
+    LLAVE_DER       reduce using rule 5 (sentencia -> asignacion .)
+
+
+state 6
+
+    (6) sentencia -> impresion .
+
+    IDENTIFICADOR   reduce using rule 6 (sentencia -> impresion .)
+    CONSOLE         reduce using rule 6 (sentencia -> impresion .)
+    WHILE           reduce using rule 6 (sentencia -> impresion .)
+    STATIC          reduce using rule 6 (sentencia -> impresion .)
+    IF              reduce using rule 6 (sentencia -> impresion .)
+    FOR             reduce using rule 6 (sentencia -> impresion .)
+    INT             reduce using rule 6 (sentencia -> impresion .)
+    FLOAT           reduce using rule 6 (sentencia -> impresion .)
+    CHAR            reduce using rule 6 (sentencia -> impresion .)
+    STRING          reduce using rule 6 (sentencia -> impresion .)
+    BOOL            reduce using rule 6 (sentencia -> impresion .)
+    $end            reduce using rule 6 (sentencia -> impresion .)
+    LLAVE_DER       reduce using rule 6 (sentencia -> impresion .)
+
+
+state 7
+
+    (7) sentencia -> bucle_while .
+
+    IDENTIFICADOR   reduce using rule 7 (sentencia -> bucle_while .)
+    CONSOLE         reduce using rule 7 (sentencia -> bucle_while .)
+    WHILE           reduce using rule 7 (sentencia -> bucle_while .)
+    STATIC          reduce using rule 7 (sentencia -> bucle_while .)
+    IF              reduce using rule 7 (sentencia -> bucle_while .)
+    FOR             reduce using rule 7 (sentencia -> bucle_while .)
+    INT             reduce using rule 7 (sentencia -> bucle_while .)
+    FLOAT           reduce using rule 7 (sentencia -> bucle_while .)
+    CHAR            reduce using rule 7 (sentencia -> bucle_while .)
+    STRING          reduce using rule 7 (sentencia -> bucle_while .)
+    BOOL            reduce using rule 7 (sentencia -> bucle_while .)
+    $end            reduce using rule 7 (sentencia -> bucle_while .)
+    LLAVE_DER       reduce using rule 7 (sentencia -> bucle_while .)
+
+
+state 8
+
+    (8) sentencia -> declaracion_arreglo .
+
+    IDENTIFICADOR   reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    CONSOLE         reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    WHILE           reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    STATIC          reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    IF              reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    FOR             reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    INT             reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    FLOAT           reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    CHAR            reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    STRING          reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    BOOL            reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    $end            reduce using rule 8 (sentencia -> declaracion_arreglo .)
+    LLAVE_DER       reduce using rule 8 (sentencia -> declaracion_arreglo .)
+
+
+state 9
+
+    (9) sentencia -> metodo_main .
+
+    IDENTIFICADOR   reduce using rule 9 (sentencia -> metodo_main .)
+    CONSOLE         reduce using rule 9 (sentencia -> metodo_main .)
+    WHILE           reduce using rule 9 (sentencia -> metodo_main .)
+    STATIC          reduce using rule 9 (sentencia -> metodo_main .)
+    IF              reduce using rule 9 (sentencia -> metodo_main .)
+    FOR             reduce using rule 9 (sentencia -> metodo_main .)
+    INT             reduce using rule 9 (sentencia -> metodo_main .)
+    FLOAT           reduce using rule 9 (sentencia -> metodo_main .)
+    CHAR            reduce using rule 9 (sentencia -> metodo_main .)
+    STRING          reduce using rule 9 (sentencia -> metodo_main .)
+    BOOL            reduce using rule 9 (sentencia -> metodo_main .)
+    $end            reduce using rule 9 (sentencia -> metodo_main .)
+    LLAVE_DER       reduce using rule 9 (sentencia -> metodo_main .)
+
+
+state 10
+
+    (10) sentencia -> estructura_control_companeros .
+
+    IDENTIFICADOR   reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    CONSOLE         reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    WHILE           reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    STATIC          reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    IF              reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    FOR             reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    INT             reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    FLOAT           reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    CHAR            reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    STRING          reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    BOOL            reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    $end            reduce using rule 10 (sentencia -> estructura_control_companeros .)
+    LLAVE_DER       reduce using rule 10 (sentencia -> estructura_control_companeros .)
+
+
+state 11
+
+    (18) declaracion -> tipo_primitivo . lista_declaraciones PUNTO_COMA
+    (52) declaracion_arreglo -> tipo_primitivo . CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA
+    (53) declaracion_arreglo -> tipo_primitivo . CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+    (19) lista_declaraciones -> . lista_declaraciones COMA elemento_declaracion
+    (20) lista_declaraciones -> . elemento_declaracion
+    (21) elemento_declaracion -> . IDENTIFICADOR IGUAL expresion
+    (22) elemento_declaracion -> . IDENTIFICADOR
+
+    CORCHETE_IZQ    shift and go to state 25
+    IDENTIFICADOR   shift and go to state 26
+
+    lista_declaraciones            shift and go to state 24
+    elemento_declaracion           shift and go to state 27
+
+state 12
+
+    (23) asignacion -> IDENTIFICADOR . IGUAL expresion PUNTO_COMA
+
+    IGUAL           shift and go to state 28
+
+
+state 13
+
+    (24) impresion -> CONSOLE . PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (25) impresion -> CONSOLE . PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+
+    PUNTO           shift and go to state 29
+
+
+state 14
+
+    (50) bucle_while -> WHILE . PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+
+    PARENTESIS_IZQ  shift and go to state 30
+
+
+state 15
+
+    (54) metodo_main -> STATIC . VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+
+    VOID            shift and go to state 31
+
+
+state 16
+
+    (11) estructura_control_companeros -> IF . PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+
+    PARENTESIS_IZQ  shift and go to state 32
+
+
+state 17
+
+    (12) estructura_control_companeros -> FOR . PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque
+
+    PARENTESIS_IZQ  shift and go to state 33
+
+
+state 18
+
+    (13) tipo_primitivo -> INT .
+
+    CORCHETE_IZQ    reduce using rule 13 (tipo_primitivo -> INT .)
+    IDENTIFICADOR   reduce using rule 13 (tipo_primitivo -> INT .)
+
+
+state 19
+
+    (14) tipo_primitivo -> FLOAT .
+
+    CORCHETE_IZQ    reduce using rule 14 (tipo_primitivo -> FLOAT .)
+    IDENTIFICADOR   reduce using rule 14 (tipo_primitivo -> FLOAT .)
+
+
+state 20
+
+    (15) tipo_primitivo -> CHAR .
+
+    CORCHETE_IZQ    reduce using rule 15 (tipo_primitivo -> CHAR .)
+    IDENTIFICADOR   reduce using rule 15 (tipo_primitivo -> CHAR .)
+
+
+state 21
+
+    (16) tipo_primitivo -> STRING .
+
+    CORCHETE_IZQ    reduce using rule 16 (tipo_primitivo -> STRING .)
+    IDENTIFICADOR   reduce using rule 16 (tipo_primitivo -> STRING .)
+
+
+state 22
+
+    (17) tipo_primitivo -> BOOL .
+
+    CORCHETE_IZQ    reduce using rule 17 (tipo_primitivo -> BOOL .)
+    IDENTIFICADOR   reduce using rule 17 (tipo_primitivo -> BOOL .)
+
+
+state 23
+
+    (2) lista_sentencias -> sentencia lista_sentencias .
+
+    $end            reduce using rule 2 (lista_sentencias -> sentencia lista_sentencias .)
+    LLAVE_DER       reduce using rule 2 (lista_sentencias -> sentencia lista_sentencias .)
+
+
+state 24
+
+    (18) declaracion -> tipo_primitivo lista_declaraciones . PUNTO_COMA
+    (19) lista_declaraciones -> lista_declaraciones . COMA elemento_declaracion
+
+    PUNTO_COMA      shift and go to state 34
+    COMA            shift and go to state 35
+
+
+state 25
+
+    (52) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ . CORCHETE_DER IDENTIFICADOR PUNTO_COMA
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ . CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+
+    CORCHETE_DER    shift and go to state 36
+
+
+state 26
+
+    (21) elemento_declaracion -> IDENTIFICADOR . IGUAL expresion
+    (22) elemento_declaracion -> IDENTIFICADOR .
+
+    IGUAL           shift and go to state 37
+    PUNTO_COMA      reduce using rule 22 (elemento_declaracion -> IDENTIFICADOR .)
+    COMA            reduce using rule 22 (elemento_declaracion -> IDENTIFICADOR .)
+
+
+state 27
+
+    (20) lista_declaraciones -> elemento_declaracion .
+
+    PUNTO_COMA      reduce using rule 20 (lista_declaraciones -> elemento_declaracion .)
+    COMA            reduce using rule 20 (lista_declaraciones -> elemento_declaracion .)
+
+
+state 28
+
+    (23) asignacion -> IDENTIFICADOR IGUAL . expresion PUNTO_COMA
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 39
+    lectura_teclado                shift and go to state 48
+
+state 29
+
+    (24) impresion -> CONSOLE PUNTO . WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (25) impresion -> CONSOLE PUNTO . WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+
+    WRITE           shift and go to state 50
+    WRITELINE       shift and go to state 51
+
+
+state 30
+
+    (50) bucle_while -> WHILE PARENTESIS_IZQ . expresion PARENTESIS_DER bloque
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 52
+    lectura_teclado                shift and go to state 48
+
+state 31
+
+    (54) metodo_main -> STATIC VOID . IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+
+    IDENTIFICADOR   shift and go to state 53
+
+
+state 32
+
+    (11) estructura_control_companeros -> IF PARENTESIS_IZQ . expresion PARENTESIS_DER bloque
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 54
+    lectura_teclado                shift and go to state 48
+
+state 33
+
+    (12) estructura_control_companeros -> FOR PARENTESIS_IZQ . asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque
+    (23) asignacion -> . IDENTIFICADOR IGUAL expresion PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 12
+
+    asignacion                     shift and go to state 55
+
+state 34
+
+    (18) declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .
+
+    IDENTIFICADOR   reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    CONSOLE         reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    WHILE           reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    STATIC          reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    IF              reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    FOR             reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    INT             reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    FLOAT           reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    CHAR            reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    STRING          reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    BOOL            reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    $end            reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+    LLAVE_DER       reduce using rule 18 (declaracion -> tipo_primitivo lista_declaraciones PUNTO_COMA .)
+
+
+state 35
+
+    (19) lista_declaraciones -> lista_declaraciones COMA . elemento_declaracion
+    (21) elemento_declaracion -> . IDENTIFICADOR IGUAL expresion
+    (22) elemento_declaracion -> . IDENTIFICADOR
+
+    IDENTIFICADOR   shift and go to state 26
+
+    elemento_declaracion           shift and go to state 56
+
+state 36
+
+    (52) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER . IDENTIFICADOR PUNTO_COMA
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER . IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 57
+
+
+state 37
+
+    (21) elemento_declaracion -> IDENTIFICADOR IGUAL . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 58
+    lectura_teclado                shift and go to state 48
+
+state 38
+
+    (45) expresion -> IDENTIFICADOR .
+
+    PUNTO_COMA      reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MAS             reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MENOS           reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MULT            reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    DIV             reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MOD             reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    IGUAL_IGUAL     reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    DIFERENTE       reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MENOR           reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MENOR_IGUAL     reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MAYOR           reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    MAYOR_IGUAL     reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    AND             reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    OR              reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    PARENTESIS_DER  reduce using rule 45 (expresion -> IDENTIFICADOR .)
+    COMA            reduce using rule 45 (expresion -> IDENTIFICADOR .)
+
+
+state 39
+
+    (23) asignacion -> IDENTIFICADOR IGUAL expresion . PUNTO_COMA
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      shift and go to state 59
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 40
+
+    (39) expresion -> NOT . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 73
+    lectura_teclado                shift and go to state 48
+
+state 41
+
+    (40) expresion -> PARENTESIS_IZQ . expresion PARENTESIS_DER
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 74
+    lectura_teclado                shift and go to state 48
+
+state 42
+
+    (41) expresion -> ENTERO .
+
+    PUNTO_COMA      reduce using rule 41 (expresion -> ENTERO .)
+    MAS             reduce using rule 41 (expresion -> ENTERO .)
+    MENOS           reduce using rule 41 (expresion -> ENTERO .)
+    MULT            reduce using rule 41 (expresion -> ENTERO .)
+    DIV             reduce using rule 41 (expresion -> ENTERO .)
+    MOD             reduce using rule 41 (expresion -> ENTERO .)
+    IGUAL_IGUAL     reduce using rule 41 (expresion -> ENTERO .)
+    DIFERENTE       reduce using rule 41 (expresion -> ENTERO .)
+    MENOR           reduce using rule 41 (expresion -> ENTERO .)
+    MENOR_IGUAL     reduce using rule 41 (expresion -> ENTERO .)
+    MAYOR           reduce using rule 41 (expresion -> ENTERO .)
+    MAYOR_IGUAL     reduce using rule 41 (expresion -> ENTERO .)
+    AND             reduce using rule 41 (expresion -> ENTERO .)
+    OR              reduce using rule 41 (expresion -> ENTERO .)
+    PARENTESIS_DER  reduce using rule 41 (expresion -> ENTERO .)
+    COMA            reduce using rule 41 (expresion -> ENTERO .)
+
+
+state 43
+
+    (42) expresion -> FLOTANTE .
+
+    PUNTO_COMA      reduce using rule 42 (expresion -> FLOTANTE .)
+    MAS             reduce using rule 42 (expresion -> FLOTANTE .)
+    MENOS           reduce using rule 42 (expresion -> FLOTANTE .)
+    MULT            reduce using rule 42 (expresion -> FLOTANTE .)
+    DIV             reduce using rule 42 (expresion -> FLOTANTE .)
+    MOD             reduce using rule 42 (expresion -> FLOTANTE .)
+    IGUAL_IGUAL     reduce using rule 42 (expresion -> FLOTANTE .)
+    DIFERENTE       reduce using rule 42 (expresion -> FLOTANTE .)
+    MENOR           reduce using rule 42 (expresion -> FLOTANTE .)
+    MENOR_IGUAL     reduce using rule 42 (expresion -> FLOTANTE .)
+    MAYOR           reduce using rule 42 (expresion -> FLOTANTE .)
+    MAYOR_IGUAL     reduce using rule 42 (expresion -> FLOTANTE .)
+    AND             reduce using rule 42 (expresion -> FLOTANTE .)
+    OR              reduce using rule 42 (expresion -> FLOTANTE .)
+    PARENTESIS_DER  reduce using rule 42 (expresion -> FLOTANTE .)
+    COMA            reduce using rule 42 (expresion -> FLOTANTE .)
+
+
+state 44
+
+    (43) expresion -> CADENA .
+
+    PUNTO_COMA      reduce using rule 43 (expresion -> CADENA .)
+    MAS             reduce using rule 43 (expresion -> CADENA .)
+    MENOS           reduce using rule 43 (expresion -> CADENA .)
+    MULT            reduce using rule 43 (expresion -> CADENA .)
+    DIV             reduce using rule 43 (expresion -> CADENA .)
+    MOD             reduce using rule 43 (expresion -> CADENA .)
+    IGUAL_IGUAL     reduce using rule 43 (expresion -> CADENA .)
+    DIFERENTE       reduce using rule 43 (expresion -> CADENA .)
+    MENOR           reduce using rule 43 (expresion -> CADENA .)
+    MENOR_IGUAL     reduce using rule 43 (expresion -> CADENA .)
+    MAYOR           reduce using rule 43 (expresion -> CADENA .)
+    MAYOR_IGUAL     reduce using rule 43 (expresion -> CADENA .)
+    AND             reduce using rule 43 (expresion -> CADENA .)
+    OR              reduce using rule 43 (expresion -> CADENA .)
+    PARENTESIS_DER  reduce using rule 43 (expresion -> CADENA .)
+    COMA            reduce using rule 43 (expresion -> CADENA .)
+
+
+state 45
+
+    (44) expresion -> CARACTER .
+
+    PUNTO_COMA      reduce using rule 44 (expresion -> CARACTER .)
+    MAS             reduce using rule 44 (expresion -> CARACTER .)
+    MENOS           reduce using rule 44 (expresion -> CARACTER .)
+    MULT            reduce using rule 44 (expresion -> CARACTER .)
+    DIV             reduce using rule 44 (expresion -> CARACTER .)
+    MOD             reduce using rule 44 (expresion -> CARACTER .)
+    IGUAL_IGUAL     reduce using rule 44 (expresion -> CARACTER .)
+    DIFERENTE       reduce using rule 44 (expresion -> CARACTER .)
+    MENOR           reduce using rule 44 (expresion -> CARACTER .)
+    MENOR_IGUAL     reduce using rule 44 (expresion -> CARACTER .)
+    MAYOR           reduce using rule 44 (expresion -> CARACTER .)
+    MAYOR_IGUAL     reduce using rule 44 (expresion -> CARACTER .)
+    AND             reduce using rule 44 (expresion -> CARACTER .)
+    OR              reduce using rule 44 (expresion -> CARACTER .)
+    PARENTESIS_DER  reduce using rule 44 (expresion -> CARACTER .)
+    COMA            reduce using rule 44 (expresion -> CARACTER .)
+
+
+state 46
+
+    (46) expresion -> TRUE .
+
+    PUNTO_COMA      reduce using rule 46 (expresion -> TRUE .)
+    MAS             reduce using rule 46 (expresion -> TRUE .)
+    MENOS           reduce using rule 46 (expresion -> TRUE .)
+    MULT            reduce using rule 46 (expresion -> TRUE .)
+    DIV             reduce using rule 46 (expresion -> TRUE .)
+    MOD             reduce using rule 46 (expresion -> TRUE .)
+    IGUAL_IGUAL     reduce using rule 46 (expresion -> TRUE .)
+    DIFERENTE       reduce using rule 46 (expresion -> TRUE .)
+    MENOR           reduce using rule 46 (expresion -> TRUE .)
+    MENOR_IGUAL     reduce using rule 46 (expresion -> TRUE .)
+    MAYOR           reduce using rule 46 (expresion -> TRUE .)
+    MAYOR_IGUAL     reduce using rule 46 (expresion -> TRUE .)
+    AND             reduce using rule 46 (expresion -> TRUE .)
+    OR              reduce using rule 46 (expresion -> TRUE .)
+    PARENTESIS_DER  reduce using rule 46 (expresion -> TRUE .)
+    COMA            reduce using rule 46 (expresion -> TRUE .)
+
+
+state 47
+
+    (47) expresion -> FALSE .
+
+    PUNTO_COMA      reduce using rule 47 (expresion -> FALSE .)
+    MAS             reduce using rule 47 (expresion -> FALSE .)
+    MENOS           reduce using rule 47 (expresion -> FALSE .)
+    MULT            reduce using rule 47 (expresion -> FALSE .)
+    DIV             reduce using rule 47 (expresion -> FALSE .)
+    MOD             reduce using rule 47 (expresion -> FALSE .)
+    IGUAL_IGUAL     reduce using rule 47 (expresion -> FALSE .)
+    DIFERENTE       reduce using rule 47 (expresion -> FALSE .)
+    MENOR           reduce using rule 47 (expresion -> FALSE .)
+    MENOR_IGUAL     reduce using rule 47 (expresion -> FALSE .)
+    MAYOR           reduce using rule 47 (expresion -> FALSE .)
+    MAYOR_IGUAL     reduce using rule 47 (expresion -> FALSE .)
+    AND             reduce using rule 47 (expresion -> FALSE .)
+    OR              reduce using rule 47 (expresion -> FALSE .)
+    PARENTESIS_DER  reduce using rule 47 (expresion -> FALSE .)
+    COMA            reduce using rule 47 (expresion -> FALSE .)
+
+
+state 48
+
+    (48) expresion -> lectura_teclado .
+
+    PUNTO_COMA      reduce using rule 48 (expresion -> lectura_teclado .)
+    MAS             reduce using rule 48 (expresion -> lectura_teclado .)
+    MENOS           reduce using rule 48 (expresion -> lectura_teclado .)
+    MULT            reduce using rule 48 (expresion -> lectura_teclado .)
+    DIV             reduce using rule 48 (expresion -> lectura_teclado .)
+    MOD             reduce using rule 48 (expresion -> lectura_teclado .)
+    IGUAL_IGUAL     reduce using rule 48 (expresion -> lectura_teclado .)
+    DIFERENTE       reduce using rule 48 (expresion -> lectura_teclado .)
+    MENOR           reduce using rule 48 (expresion -> lectura_teclado .)
+    MENOR_IGUAL     reduce using rule 48 (expresion -> lectura_teclado .)
+    MAYOR           reduce using rule 48 (expresion -> lectura_teclado .)
+    MAYOR_IGUAL     reduce using rule 48 (expresion -> lectura_teclado .)
+    AND             reduce using rule 48 (expresion -> lectura_teclado .)
+    OR              reduce using rule 48 (expresion -> lectura_teclado .)
+    PARENTESIS_DER  reduce using rule 48 (expresion -> lectura_teclado .)
+    COMA            reduce using rule 48 (expresion -> lectura_teclado .)
+
+
+state 49
+
+    (49) lectura_teclado -> CONSOLE . PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    PUNTO           shift and go to state 75
+
+
+state 50
+
+    (24) impresion -> CONSOLE PUNTO WRITE . PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+
+    PARENTESIS_IZQ  shift and go to state 76
+
+
+state 51
+
+    (25) impresion -> CONSOLE PUNTO WRITELINE . PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+
+    PARENTESIS_IZQ  shift and go to state 77
+
+
+state 52
+
+    (50) bucle_while -> WHILE PARENTESIS_IZQ expresion . PARENTESIS_DER bloque
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PARENTESIS_DER  shift and go to state 78
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 53
+
+    (54) metodo_main -> STATIC VOID IDENTIFICADOR . PARENTESIS_IZQ PARENTESIS_DER bloque
+
+    PARENTESIS_IZQ  shift and go to state 79
+
+
+state 54
+
+    (11) estructura_control_companeros -> IF PARENTESIS_IZQ expresion . PARENTESIS_DER bloque
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PARENTESIS_DER  shift and go to state 80
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 55
+
+    (12) estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion . expresion PUNTO_COMA asignacion PARENTESIS_DER bloque
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 81
+    lectura_teclado                shift and go to state 48
+
+state 56
+
+    (19) lista_declaraciones -> lista_declaraciones COMA elemento_declaracion .
+
+    PUNTO_COMA      reduce using rule 19 (lista_declaraciones -> lista_declaraciones COMA elemento_declaracion .)
+    COMA            reduce using rule 19 (lista_declaraciones -> lista_declaraciones COMA elemento_declaracion .)
+
+
+state 57
+
+    (52) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR . PUNTO_COMA
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR . IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 82
+    IGUAL           shift and go to state 83
+
+
+state 58
+
+    (21) elemento_declaracion -> IDENTIFICADOR IGUAL expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 21 (elemento_declaracion -> IDENTIFICADOR IGUAL expresion .)
+    COMA            reduce using rule 21 (elemento_declaracion -> IDENTIFICADOR IGUAL expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 59
+
+    (23) asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .
+
+    IDENTIFICADOR   reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    CONSOLE         reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    WHILE           reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    STATIC          reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    IF              reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    FOR             reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    INT             reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    FLOAT           reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    CHAR            reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    STRING          reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    BOOL            reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    $end            reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    LLAVE_DER       reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    NOT             reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    PARENTESIS_IZQ  reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    ENTERO          reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    FLOTANTE        reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    CADENA          reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    CARACTER        reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    TRUE            reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    FALSE           reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+    PARENTESIS_DER  reduce using rule 23 (asignacion -> IDENTIFICADOR IGUAL expresion PUNTO_COMA .)
+
+
+state 60
+
+    (26) expresion -> expresion MAS . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 84
+    lectura_teclado                shift and go to state 48
+
+state 61
+
+    (27) expresion -> expresion MENOS . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 85
+    lectura_teclado                shift and go to state 48
+
+state 62
+
+    (28) expresion -> expresion MULT . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 86
+    lectura_teclado                shift and go to state 48
+
+state 63
+
+    (29) expresion -> expresion DIV . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 87
+    lectura_teclado                shift and go to state 48
+
+state 64
+
+    (30) expresion -> expresion MOD . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 88
+    lectura_teclado                shift and go to state 48
+
+state 65
+
+    (31) expresion -> expresion IGUAL_IGUAL . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 89
+    lectura_teclado                shift and go to state 48
+
+state 66
+
+    (32) expresion -> expresion DIFERENTE . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 90
+    lectura_teclado                shift and go to state 48
+
+state 67
+
+    (33) expresion -> expresion MENOR . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 91
+    lectura_teclado                shift and go to state 48
+
+state 68
+
+    (34) expresion -> expresion MENOR_IGUAL . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 92
+    lectura_teclado                shift and go to state 48
+
+state 69
+
+    (35) expresion -> expresion MAYOR . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 93
+    lectura_teclado                shift and go to state 48
+
+state 70
+
+    (36) expresion -> expresion MAYOR_IGUAL . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 94
+    lectura_teclado                shift and go to state 48
+
+state 71
+
+    (37) expresion -> expresion AND . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 95
+    lectura_teclado                shift and go to state 48
+
+state 72
+
+    (38) expresion -> expresion OR . expresion
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 96
+    lectura_teclado                shift and go to state 48
+
+state 73
+
+    (39) expresion -> NOT expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 39 (expresion -> NOT expresion .)
+    AND             reduce using rule 39 (expresion -> NOT expresion .)
+    OR              reduce using rule 39 (expresion -> NOT expresion .)
+    PARENTESIS_DER  reduce using rule 39 (expresion -> NOT expresion .)
+    COMA            reduce using rule 39 (expresion -> NOT expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+
+  ! MAS             [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! MENOS           [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! MULT            [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! DIV             [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! MOD             [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! IGUAL_IGUAL     [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! DIFERENTE       [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! MENOR           [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! MENOR_IGUAL     [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! MAYOR           [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! MAYOR_IGUAL     [ reduce using rule 39 (expresion -> NOT expresion .) ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 74
+
+    (40) expresion -> PARENTESIS_IZQ expresion . PARENTESIS_DER
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PARENTESIS_DER  shift and go to state 97
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 75
+
+    (49) lectura_teclado -> CONSOLE PUNTO . READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    READLINE        shift and go to state 98
+
+
+state 76
+
+    (24) impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ . expresion PARENTESIS_DER PUNTO_COMA
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 99
+    lectura_teclado                shift and go to state 48
+
+state 77
+
+    (25) impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ . expresion PARENTESIS_DER PUNTO_COMA
+    (26) expresion -> . expresion MAS expresion
+    (27) expresion -> . expresion MENOS expresion
+    (28) expresion -> . expresion MULT expresion
+    (29) expresion -> . expresion DIV expresion
+    (30) expresion -> . expresion MOD expresion
+    (31) expresion -> . expresion IGUAL_IGUAL expresion
+    (32) expresion -> . expresion DIFERENTE expresion
+    (33) expresion -> . expresion MENOR expresion
+    (34) expresion -> . expresion MENOR_IGUAL expresion
+    (35) expresion -> . expresion MAYOR expresion
+    (36) expresion -> . expresion MAYOR_IGUAL expresion
+    (37) expresion -> . expresion AND expresion
+    (38) expresion -> . expresion OR expresion
+    (39) expresion -> . NOT expresion
+    (40) expresion -> . PARENTESIS_IZQ expresion PARENTESIS_DER
+    (41) expresion -> . ENTERO
+    (42) expresion -> . FLOTANTE
+    (43) expresion -> . CADENA
+    (44) expresion -> . CARACTER
+    (45) expresion -> . IDENTIFICADOR
+    (46) expresion -> . TRUE
+    (47) expresion -> . FALSE
+    (48) expresion -> . lectura_teclado
+    (49) lectura_teclado -> . CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER
+
+    NOT             shift and go to state 40
+    PARENTESIS_IZQ  shift and go to state 41
+    ENTERO          shift and go to state 42
+    FLOTANTE        shift and go to state 43
+    CADENA          shift and go to state 44
+    CARACTER        shift and go to state 45
+    IDENTIFICADOR   shift and go to state 38
+    TRUE            shift and go to state 46
+    FALSE           shift and go to state 47
+    CONSOLE         shift and go to state 49
+
+    expresion                      shift and go to state 100
+    lectura_teclado                shift and go to state 48
+
+state 78
+
+    (50) bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER . bloque
+    (51) bloque -> . LLAVE_IZQ lista_sentencias LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 102
+
+    bloque                         shift and go to state 101
+
+state 79
+
+    (54) metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ . PARENTESIS_DER bloque
+
+    PARENTESIS_DER  shift and go to state 103
+
+
+state 80
+
+    (11) estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER . bloque
+    (51) bloque -> . LLAVE_IZQ lista_sentencias LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 102
+
+    bloque                         shift and go to state 104
+
+state 81
+
+    (12) estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion . PUNTO_COMA asignacion PARENTESIS_DER bloque
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      shift and go to state 105
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 82
+
+    (52) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .
+
+    IDENTIFICADOR   reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    CONSOLE         reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    WHILE           reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    STATIC          reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    IF              reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    FOR             reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    INT             reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    FLOAT           reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    CHAR            reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    STRING          reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    BOOL            reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    $end            reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+    LLAVE_DER       reduce using rule 52 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA .)
+
+
+state 83
+
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL . NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+
+    NEW             shift and go to state 106
+
+
+state 84
+
+    (26) expresion -> expresion MAS expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 26 (expresion -> expresion MAS expresion .)
+    MAS             reduce using rule 26 (expresion -> expresion MAS expresion .)
+    MENOS           reduce using rule 26 (expresion -> expresion MAS expresion .)
+    IGUAL_IGUAL     reduce using rule 26 (expresion -> expresion MAS expresion .)
+    DIFERENTE       reduce using rule 26 (expresion -> expresion MAS expresion .)
+    MENOR           reduce using rule 26 (expresion -> expresion MAS expresion .)
+    MENOR_IGUAL     reduce using rule 26 (expresion -> expresion MAS expresion .)
+    MAYOR           reduce using rule 26 (expresion -> expresion MAS expresion .)
+    MAYOR_IGUAL     reduce using rule 26 (expresion -> expresion MAS expresion .)
+    AND             reduce using rule 26 (expresion -> expresion MAS expresion .)
+    OR              reduce using rule 26 (expresion -> expresion MAS expresion .)
+    PARENTESIS_DER  reduce using rule 26 (expresion -> expresion MAS expresion .)
+    COMA            reduce using rule 26 (expresion -> expresion MAS expresion .)
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MULT            [ reduce using rule 26 (expresion -> expresion MAS expresion .) ]
+  ! DIV             [ reduce using rule 26 (expresion -> expresion MAS expresion .) ]
+  ! MOD             [ reduce using rule 26 (expresion -> expresion MAS expresion .) ]
+  ! MAS             [ shift and go to state 60 ]
+  ! MENOS           [ shift and go to state 61 ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 85
+
+    (27) expresion -> expresion MENOS expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    MAS             reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    MENOS           reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    IGUAL_IGUAL     reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    DIFERENTE       reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    MENOR           reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    MENOR_IGUAL     reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    MAYOR           reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    MAYOR_IGUAL     reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    AND             reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    OR              reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    PARENTESIS_DER  reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    COMA            reduce using rule 27 (expresion -> expresion MENOS expresion .)
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MULT            [ reduce using rule 27 (expresion -> expresion MENOS expresion .) ]
+  ! DIV             [ reduce using rule 27 (expresion -> expresion MENOS expresion .) ]
+  ! MOD             [ reduce using rule 27 (expresion -> expresion MENOS expresion .) ]
+  ! MAS             [ shift and go to state 60 ]
+  ! MENOS           [ shift and go to state 61 ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 86
+
+    (28) expresion -> expresion MULT expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MAS             reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MENOS           reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MULT            reduce using rule 28 (expresion -> expresion MULT expresion .)
+    DIV             reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MOD             reduce using rule 28 (expresion -> expresion MULT expresion .)
+    IGUAL_IGUAL     reduce using rule 28 (expresion -> expresion MULT expresion .)
+    DIFERENTE       reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MENOR           reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MENOR_IGUAL     reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MAYOR           reduce using rule 28 (expresion -> expresion MULT expresion .)
+    MAYOR_IGUAL     reduce using rule 28 (expresion -> expresion MULT expresion .)
+    AND             reduce using rule 28 (expresion -> expresion MULT expresion .)
+    OR              reduce using rule 28 (expresion -> expresion MULT expresion .)
+    PARENTESIS_DER  reduce using rule 28 (expresion -> expresion MULT expresion .)
+    COMA            reduce using rule 28 (expresion -> expresion MULT expresion .)
+
+  ! MAS             [ shift and go to state 60 ]
+  ! MENOS           [ shift and go to state 61 ]
+  ! MULT            [ shift and go to state 62 ]
+  ! DIV             [ shift and go to state 63 ]
+  ! MOD             [ shift and go to state 64 ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 87
+
+    (29) expresion -> expresion DIV expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MAS             reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MENOS           reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MULT            reduce using rule 29 (expresion -> expresion DIV expresion .)
+    DIV             reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MOD             reduce using rule 29 (expresion -> expresion DIV expresion .)
+    IGUAL_IGUAL     reduce using rule 29 (expresion -> expresion DIV expresion .)
+    DIFERENTE       reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MENOR           reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MENOR_IGUAL     reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MAYOR           reduce using rule 29 (expresion -> expresion DIV expresion .)
+    MAYOR_IGUAL     reduce using rule 29 (expresion -> expresion DIV expresion .)
+    AND             reduce using rule 29 (expresion -> expresion DIV expresion .)
+    OR              reduce using rule 29 (expresion -> expresion DIV expresion .)
+    PARENTESIS_DER  reduce using rule 29 (expresion -> expresion DIV expresion .)
+    COMA            reduce using rule 29 (expresion -> expresion DIV expresion .)
+
+  ! MAS             [ shift and go to state 60 ]
+  ! MENOS           [ shift and go to state 61 ]
+  ! MULT            [ shift and go to state 62 ]
+  ! DIV             [ shift and go to state 63 ]
+  ! MOD             [ shift and go to state 64 ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 88
+
+    (30) expresion -> expresion MOD expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MAS             reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MENOS           reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MULT            reduce using rule 30 (expresion -> expresion MOD expresion .)
+    DIV             reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MOD             reduce using rule 30 (expresion -> expresion MOD expresion .)
+    IGUAL_IGUAL     reduce using rule 30 (expresion -> expresion MOD expresion .)
+    DIFERENTE       reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MENOR           reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MENOR_IGUAL     reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MAYOR           reduce using rule 30 (expresion -> expresion MOD expresion .)
+    MAYOR_IGUAL     reduce using rule 30 (expresion -> expresion MOD expresion .)
+    AND             reduce using rule 30 (expresion -> expresion MOD expresion .)
+    OR              reduce using rule 30 (expresion -> expresion MOD expresion .)
+    PARENTESIS_DER  reduce using rule 30 (expresion -> expresion MOD expresion .)
+    COMA            reduce using rule 30 (expresion -> expresion MOD expresion .)
+
+  ! MAS             [ shift and go to state 60 ]
+  ! MENOS           [ shift and go to state 61 ]
+  ! MULT            [ shift and go to state 62 ]
+  ! DIV             [ shift and go to state 63 ]
+  ! MOD             [ shift and go to state 64 ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 89
+
+    (31) expresion -> expresion IGUAL_IGUAL expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    IGUAL_IGUAL     reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    DIFERENTE       reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    MENOR           reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    MENOR_IGUAL     reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    MAYOR           reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    MAYOR_IGUAL     reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    AND             reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    OR              reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    PARENTESIS_DER  reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    COMA            reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MAS             [ reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .) ]
+  ! MENOS           [ reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .) ]
+  ! MULT            [ reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .) ]
+  ! DIV             [ reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .) ]
+  ! MOD             [ reduce using rule 31 (expresion -> expresion IGUAL_IGUAL expresion .) ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 90
+
+    (32) expresion -> expresion DIFERENTE expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    IGUAL_IGUAL     reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    DIFERENTE       reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    MENOR           reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    MENOR_IGUAL     reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    MAYOR           reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    MAYOR_IGUAL     reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    AND             reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    OR              reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    PARENTESIS_DER  reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    COMA            reduce using rule 32 (expresion -> expresion DIFERENTE expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MAS             [ reduce using rule 32 (expresion -> expresion DIFERENTE expresion .) ]
+  ! MENOS           [ reduce using rule 32 (expresion -> expresion DIFERENTE expresion .) ]
+  ! MULT            [ reduce using rule 32 (expresion -> expresion DIFERENTE expresion .) ]
+  ! DIV             [ reduce using rule 32 (expresion -> expresion DIFERENTE expresion .) ]
+  ! MOD             [ reduce using rule 32 (expresion -> expresion DIFERENTE expresion .) ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 91
+
+    (33) expresion -> expresion MENOR expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    IGUAL_IGUAL     reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    DIFERENTE       reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    MENOR           reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    MENOR_IGUAL     reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    MAYOR           reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    MAYOR_IGUAL     reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    AND             reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    OR              reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    PARENTESIS_DER  reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    COMA            reduce using rule 33 (expresion -> expresion MENOR expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MAS             [ reduce using rule 33 (expresion -> expresion MENOR expresion .) ]
+  ! MENOS           [ reduce using rule 33 (expresion -> expresion MENOR expresion .) ]
+  ! MULT            [ reduce using rule 33 (expresion -> expresion MENOR expresion .) ]
+  ! DIV             [ reduce using rule 33 (expresion -> expresion MENOR expresion .) ]
+  ! MOD             [ reduce using rule 33 (expresion -> expresion MENOR expresion .) ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 92
+
+    (34) expresion -> expresion MENOR_IGUAL expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    IGUAL_IGUAL     reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    DIFERENTE       reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    MENOR           reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    MENOR_IGUAL     reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    MAYOR           reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    MAYOR_IGUAL     reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    AND             reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    OR              reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    PARENTESIS_DER  reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    COMA            reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MAS             [ reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .) ]
+  ! MENOS           [ reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .) ]
+  ! MULT            [ reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .) ]
+  ! DIV             [ reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .) ]
+  ! MOD             [ reduce using rule 34 (expresion -> expresion MENOR_IGUAL expresion .) ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 93
+
+    (35) expresion -> expresion MAYOR expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    IGUAL_IGUAL     reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    DIFERENTE       reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    MENOR           reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    MENOR_IGUAL     reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    MAYOR           reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    MAYOR_IGUAL     reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    AND             reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    OR              reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    PARENTESIS_DER  reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    COMA            reduce using rule 35 (expresion -> expresion MAYOR expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MAS             [ reduce using rule 35 (expresion -> expresion MAYOR expresion .) ]
+  ! MENOS           [ reduce using rule 35 (expresion -> expresion MAYOR expresion .) ]
+  ! MULT            [ reduce using rule 35 (expresion -> expresion MAYOR expresion .) ]
+  ! DIV             [ reduce using rule 35 (expresion -> expresion MAYOR expresion .) ]
+  ! MOD             [ reduce using rule 35 (expresion -> expresion MAYOR expresion .) ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 94
+
+    (36) expresion -> expresion MAYOR_IGUAL expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    IGUAL_IGUAL     reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    DIFERENTE       reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    MENOR           reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    MENOR_IGUAL     reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    MAYOR           reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    MAYOR_IGUAL     reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    AND             reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    OR              reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    PARENTESIS_DER  reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    COMA            reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+
+  ! MAS             [ reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .) ]
+  ! MENOS           [ reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .) ]
+  ! MULT            [ reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .) ]
+  ! DIV             [ reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .) ]
+  ! MOD             [ reduce using rule 36 (expresion -> expresion MAYOR_IGUAL expresion .) ]
+  ! IGUAL_IGUAL     [ shift and go to state 65 ]
+  ! DIFERENTE       [ shift and go to state 66 ]
+  ! MENOR           [ shift and go to state 67 ]
+  ! MENOR_IGUAL     [ shift and go to state 68 ]
+  ! MAYOR           [ shift and go to state 69 ]
+  ! MAYOR_IGUAL     [ shift and go to state 70 ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 95
+
+    (37) expresion -> expresion AND expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 37 (expresion -> expresion AND expresion .)
+    AND             reduce using rule 37 (expresion -> expresion AND expresion .)
+    OR              reduce using rule 37 (expresion -> expresion AND expresion .)
+    PARENTESIS_DER  reduce using rule 37 (expresion -> expresion AND expresion .)
+    COMA            reduce using rule 37 (expresion -> expresion AND expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+
+  ! MAS             [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! MENOS           [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! MULT            [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! DIV             [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! MOD             [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! IGUAL_IGUAL     [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! DIFERENTE       [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! MENOR           [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! MENOR_IGUAL     [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! MAYOR           [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! MAYOR_IGUAL     [ reduce using rule 37 (expresion -> expresion AND expresion .) ]
+  ! AND             [ shift and go to state 71 ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 96
+
+    (38) expresion -> expresion OR expresion .
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PUNTO_COMA      reduce using rule 38 (expresion -> expresion OR expresion .)
+    OR              reduce using rule 38 (expresion -> expresion OR expresion .)
+    PARENTESIS_DER  reduce using rule 38 (expresion -> expresion OR expresion .)
+    COMA            reduce using rule 38 (expresion -> expresion OR expresion .)
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+
+  ! MAS             [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! MENOS           [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! MULT            [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! DIV             [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! MOD             [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! IGUAL_IGUAL     [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! DIFERENTE       [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! MENOR           [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! MENOR_IGUAL     [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! MAYOR           [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! MAYOR_IGUAL     [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! AND             [ reduce using rule 38 (expresion -> expresion OR expresion .) ]
+  ! OR              [ shift and go to state 72 ]
+
+
+state 97
+
+    (40) expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .
+
+    PUNTO_COMA      reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MAS             reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MENOS           reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MULT            reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    DIV             reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MOD             reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    IGUAL_IGUAL     reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    DIFERENTE       reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MENOR           reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MENOR_IGUAL     reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MAYOR           reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    MAYOR_IGUAL     reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    AND             reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    OR              reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+    COMA            reduce using rule 40 (expresion -> PARENTESIS_IZQ expresion PARENTESIS_DER .)
+
+
+state 98
+
+    (49) lectura_teclado -> CONSOLE PUNTO READLINE . PARENTESIS_IZQ PARENTESIS_DER
+
+    PARENTESIS_IZQ  shift and go to state 107
+
+
+state 99
+
+    (24) impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion . PARENTESIS_DER PUNTO_COMA
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PARENTESIS_DER  shift and go to state 108
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 100
+
+    (25) impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion . PARENTESIS_DER PUNTO_COMA
+    (26) expresion -> expresion . MAS expresion
+    (27) expresion -> expresion . MENOS expresion
+    (28) expresion -> expresion . MULT expresion
+    (29) expresion -> expresion . DIV expresion
+    (30) expresion -> expresion . MOD expresion
+    (31) expresion -> expresion . IGUAL_IGUAL expresion
+    (32) expresion -> expresion . DIFERENTE expresion
+    (33) expresion -> expresion . MENOR expresion
+    (34) expresion -> expresion . MENOR_IGUAL expresion
+    (35) expresion -> expresion . MAYOR expresion
+    (36) expresion -> expresion . MAYOR_IGUAL expresion
+    (37) expresion -> expresion . AND expresion
+    (38) expresion -> expresion . OR expresion
+
+    PARENTESIS_DER  shift and go to state 109
+    MAS             shift and go to state 60
+    MENOS           shift and go to state 61
+    MULT            shift and go to state 62
+    DIV             shift and go to state 63
+    MOD             shift and go to state 64
+    IGUAL_IGUAL     shift and go to state 65
+    DIFERENTE       shift and go to state 66
+    MENOR           shift and go to state 67
+    MENOR_IGUAL     shift and go to state 68
+    MAYOR           shift and go to state 69
+    MAYOR_IGUAL     shift and go to state 70
+    AND             shift and go to state 71
+    OR              shift and go to state 72
+
+
+state 101
+
+    (50) bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .
+
+    IDENTIFICADOR   reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    CONSOLE         reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    WHILE           reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    STATIC          reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    IF              reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    FOR             reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    INT             reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    FLOAT           reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    CHAR            reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    STRING          reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    BOOL            reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    $end            reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    LLAVE_DER       reduce using rule 50 (bucle_while -> WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+
+
+state 102
+
+    (51) bloque -> LLAVE_IZQ . lista_sentencias LLAVE_DER
+    (2) lista_sentencias -> . sentencia lista_sentencias
+    (3) lista_sentencias -> . sentencia
+    (4) sentencia -> . declaracion
+    (5) sentencia -> . asignacion
+    (6) sentencia -> . impresion
+    (7) sentencia -> . bucle_while
+    (8) sentencia -> . declaracion_arreglo
+    (9) sentencia -> . metodo_main
+    (10) sentencia -> . estructura_control_companeros
+    (18) declaracion -> . tipo_primitivo lista_declaraciones PUNTO_COMA
+    (23) asignacion -> . IDENTIFICADOR IGUAL expresion PUNTO_COMA
+    (24) impresion -> . CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (25) impresion -> . CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
+    (50) bucle_while -> . WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+    (52) declaracion_arreglo -> . tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA
+    (53) declaracion_arreglo -> . tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+    (54) metodo_main -> . STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+    (11) estructura_control_companeros -> . IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque
+    (12) estructura_control_companeros -> . FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque
+    (13) tipo_primitivo -> . INT
+    (14) tipo_primitivo -> . FLOAT
+    (15) tipo_primitivo -> . CHAR
+    (16) tipo_primitivo -> . STRING
+    (17) tipo_primitivo -> . BOOL
+
+    IDENTIFICADOR   shift and go to state 12
+    CONSOLE         shift and go to state 13
+    WHILE           shift and go to state 14
+    STATIC          shift and go to state 15
+    IF              shift and go to state 16
+    FOR             shift and go to state 17
+    INT             shift and go to state 18
+    FLOAT           shift and go to state 19
+    CHAR            shift and go to state 20
+    STRING          shift and go to state 21
+    BOOL            shift and go to state 22
+
+    lista_sentencias               shift and go to state 110
+    sentencia                      shift and go to state 3
+    declaracion                    shift and go to state 4
+    asignacion                     shift and go to state 5
+    impresion                      shift and go to state 6
+    bucle_while                    shift and go to state 7
+    declaracion_arreglo            shift and go to state 8
+    metodo_main                    shift and go to state 9
+    estructura_control_companeros  shift and go to state 10
+    tipo_primitivo                 shift and go to state 11
+
+state 103
+
+    (54) metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER . bloque
+    (51) bloque -> . LLAVE_IZQ lista_sentencias LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 102
+
+    bloque                         shift and go to state 111
+
+state 104
+
+    (11) estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .
+
+    IDENTIFICADOR   reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    CONSOLE         reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    WHILE           reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    STATIC          reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    IF              reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    FOR             reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    INT             reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    FLOAT           reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    CHAR            reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    STRING          reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    BOOL            reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    $end            reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+    LLAVE_DER       reduce using rule 11 (estructura_control_companeros -> IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque .)
+
+
+state 105
+
+    (12) estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA . asignacion PARENTESIS_DER bloque
+    (23) asignacion -> . IDENTIFICADOR IGUAL expresion PUNTO_COMA
+
+    IDENTIFICADOR   shift and go to state 12
+
+    asignacion                     shift and go to state 112
+
+state 106
+
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW . tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+    (13) tipo_primitivo -> . INT
+    (14) tipo_primitivo -> . FLOAT
+    (15) tipo_primitivo -> . CHAR
+    (16) tipo_primitivo -> . STRING
+    (17) tipo_primitivo -> . BOOL
+
+    INT             shift and go to state 18
+    FLOAT           shift and go to state 19
+    CHAR            shift and go to state 20
+    STRING          shift and go to state 21
+    BOOL            shift and go to state 22
+
+    tipo_primitivo                 shift and go to state 113
+
+state 107
+
+    (49) lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ . PARENTESIS_DER
+
+    PARENTESIS_DER  shift and go to state 114
+
+
+state 108
+
+    (24) impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 115
+
+
+state 109
+
+    (25) impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 116
+
+
+state 110
+
+    (51) bloque -> LLAVE_IZQ lista_sentencias . LLAVE_DER
+
+    LLAVE_DER       shift and go to state 117
+
+
+state 111
+
+    (54) metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .
+
+    IDENTIFICADOR   reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    CONSOLE         reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    WHILE           reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    STATIC          reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    IF              reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    FOR             reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    INT             reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    FLOAT           reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    CHAR            reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    STRING          reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    BOOL            reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    $end            reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+    LLAVE_DER       reduce using rule 54 (metodo_main -> STATIC VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque .)
+
+
+state 112
+
+    (12) estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion . PARENTESIS_DER bloque
+
+    PARENTESIS_DER  shift and go to state 118
+
+
+state 113
+
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo . CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA
+
+    CORCHETE_IZQ    shift and go to state 119
+
+
+state 114
+
+    (49) lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .
+
+    PUNTO_COMA      reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MAS             reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MENOS           reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MULT            reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    DIV             reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MOD             reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    IGUAL_IGUAL     reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    DIFERENTE       reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MENOR           reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MENOR_IGUAL     reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MAYOR           reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    MAYOR_IGUAL     reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    AND             reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    OR              reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    PARENTESIS_DER  reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+    COMA            reduce using rule 49 (lectura_teclado -> CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER .)
+
+
+state 115
+
+    (24) impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .
+
+    IDENTIFICADOR   reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    CONSOLE         reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    WHILE           reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    STATIC          reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    IF              reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    FOR             reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    INT             reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    FLOAT           reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    CHAR            reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    STRING          reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    BOOL            reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    $end            reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    LLAVE_DER       reduce using rule 24 (impresion -> CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+
+
+state 116
+
+    (25) impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .
+
+    IDENTIFICADOR   reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    CONSOLE         reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    WHILE           reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    STATIC          reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    IF              reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    FOR             reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    INT             reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    FLOAT           reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    CHAR            reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    STRING          reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    BOOL            reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    $end            reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+    LLAVE_DER       reduce using rule 25 (impresion -> CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA .)
+
+
+state 117
+
+    (51) bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .
+
+    IDENTIFICADOR   reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    CONSOLE         reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    WHILE           reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    STATIC          reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    IF              reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    FOR             reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    INT             reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    FLOAT           reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    CHAR            reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    STRING          reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    BOOL            reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    $end            reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+    LLAVE_DER       reduce using rule 51 (bloque -> LLAVE_IZQ lista_sentencias LLAVE_DER .)
+
+
+state 118
+
+    (12) estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER . bloque
+    (51) bloque -> . LLAVE_IZQ lista_sentencias LLAVE_DER
+
+    LLAVE_IZQ       shift and go to state 102
+
+    bloque                         shift and go to state 120
+
+state 119
+
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ . ENTERO CORCHETE_DER PUNTO_COMA
+
+    ENTERO          shift and go to state 121
+
+
+state 120
+
+    (12) estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .
+
+    IDENTIFICADOR   reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    CONSOLE         reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    WHILE           reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    STATIC          reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    IF              reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    FOR             reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    INT             reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    FLOAT           reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    CHAR            reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    STRING          reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    BOOL            reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    $end            reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+    LLAVE_DER       reduce using rule 12 (estructura_control_companeros -> FOR PARENTESIS_IZQ asignacion expresion PUNTO_COMA asignacion PARENTESIS_DER bloque .)
+
+
+state 121
+
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO . CORCHETE_DER PUNTO_COMA
+
+    CORCHETE_DER    shift and go to state 122
+
+
+state 122
+
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER . PUNTO_COMA
+
+    PUNTO_COMA      shift and go to state 123
+
+
+state 123
+
+    (53) declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .
+
+    IDENTIFICADOR   reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    CONSOLE         reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    WHILE           reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    STATIC          reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    IF              reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    FOR             reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    INT             reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    FLOAT           reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    CHAR            reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    STRING          reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    BOOL            reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    $end            reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+    LLAVE_DER       reduce using rule 53 (declaracion_arreglo -> tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA .)
+
