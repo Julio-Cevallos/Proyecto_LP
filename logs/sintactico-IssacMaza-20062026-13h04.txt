@@ -1,0 +1,11 @@
+--- LOG ANÁLISIS SINTÁCTICO ---
+Archivo analizado: algoritmo_IssacMaza.cs
+Usuario Git: IssacMaza
+Fecha y Hora: 20/06/2026 a las 13:04:54
+--------------------------------------------------
+
+ESTADO: RECHAZADO (2 errores encontrados)
+
+DETALLE DE ERRORES:
+- Error sintactico: Token inesperado 'List' de tipo LIST en la linea 115
+- Error sintactico: Token inesperado '<' de tipo MENOR en la linea 139

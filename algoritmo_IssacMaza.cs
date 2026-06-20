@@ -5,7 +5,7 @@
           de funciones con validacion de retornos.
    ============================================================= */
 
-// ── 1. Declaracion de funciones con retorno tipado ────────────
+//  1. Declaracion de funciones con retorno tipado 
 
 // Funcion valida: retorna int
 int CalcularSuma(int a, int b) {
@@ -22,35 +22,35 @@ void MostrarResultado() {
     return;
 }
 
-// ── 2. Variables globales ──────────────────────────────────────
+//  2. Variables globales 
 
 int suma = 0;
 float promedio = 0.0;
 
-// ── 3. Arreglo unidimensional ──────────────────────────────────
+// 3. Arreglo unidimensional 
 
 int[] notas = new int[5];
 
-// ── 4. Bucle for valido: variable de control entera ────────────
+//  4. Bucle for valido: variable de control entera 
 
 for (int i = 0; i < 5; i = i + 1) {
     suma = CalcularSuma(suma, i);
 }
 
-// ── 5. Lista dinamica ──────────────────────────────────────────
+// 5. Lista dinamica 
 
 List<int> numeros = new List<int>();
 
-// ── 6. Diccionario clave-valor ─────────────────────────────────
+//  6. Diccionario clave-valor 
 
 Dictionary<string, int> edades = new Dictionary<string, int>();
 
-// ── 7. Impresion de resultados ─────────────────────────────────
+//  7. Impresion de resultados 
 
 Console.Write("Suma total: " + suma);
 Console.Write("Promedio: " + promedio);
 
-// ── 8. ERRORES SEMANTICOS INTENCIONALES ───────────────────────
+//  8. ERRORES SEMANTICOS INTENCIONALES 
 
 // Error 1: retorno de tipo incorrecto (declara int, retorna string)
 int FuncionConErrorDeRetorno(int x) {
@@ -65,7 +65,7 @@ for (string s = "inicio"; s != "fin"; s = s + "x") {
 // Error 3: estructura de datos con tipo no reconocido
 Stack<int> pila = new Stack<int>();
 
-// ── 9. ERRORES LEXICOS INTENCIONALES ──────────────────────────
+//  9. ERRORES LEXICOS INTENCIONALES 
 
 int $precio = 100;
 

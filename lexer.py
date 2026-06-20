@@ -209,7 +209,7 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
 #=============================================
 
 # Descomenta la línea del archivo que quieras probar
-validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
+#validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
 #validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
-#validar_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
+validar_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
 #validar_algoritmo("algoritmo_clases.cs", "StevenBarzola")

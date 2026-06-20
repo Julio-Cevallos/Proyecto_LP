@@ -37,7 +37,11 @@ def p_sentencia(p):
                  | bucle_while
                  | declaracion_arreglo
                  | metodo_main
-                 | estructura_control_companeros'''
+                 | bucle_for
+                 | declaracion_diccionario
+                 | declaracion_funcion
+                 | sentencia_return
+                 | llamada_funcion_stmt'''
     pass
 
 # Placeholder para que el parser no falle mientras Steven e Issac agregan sus partes
@@ -126,7 +130,8 @@ def p_expresion_terminal(p):
                  | IDENTIFICADOR
                  | TRUE
                  | FALSE
-                 | lectura_teclado'''
+                 | lectura_teclado
+                 | llamada_funcion_expr'''
     pass
 
 # Definido por: Julio Cevallos (Permite usar Console.ReadLine() dentro de asignaciones)
@@ -143,7 +148,8 @@ def p_bucle_while(p):
 
 # Definido por: Julio Cevallos (Define las Reglas de Alcance / Scope del bloque)
 def p_bloque(p):
-    '''bloque : LLAVE_IZQ lista_sentencias LLAVE_DER'''
+    '''bloque : LLAVE_IZQ lista_sentencias LLAVE_DER
+              | LLAVE_IZQ LLAVE_DER'''
     pass
 
 
@@ -166,6 +172,85 @@ def p_metodo_main(p):
 # === FIN DEL BLOQUE DE JULIO CEVALLOS ===
 # =============================================================================
 
+# =============================================================================
+# === INICIO PARTE: ISSAC MAZA ===
+# Reglas: bucle for, Dictionary<K,V>, funciones con return
+# =============================================================================
+ 
+# --- 1. ESTRUCTURA DE CONTROL: BUCLE FOR ---
+# Definido por: Issac-Maza
+# Soporta: for (int i = 0; i < 5; i = i + 1) { ... }
+def p_bucle_for(p):
+    '''bucle_for : FOR PARENTESIS_IZQ tipo_primitivo IDENTIFICADOR IGUAL expresion PUNTO_COMA expresion PUNTO_COMA IDENTIFICADOR IGUAL expresion PARENTESIS_DER bloque'''
+    pass
+ 
+# --- 2. ESTRUCTURA DE DATOS: DICCIONARIO ---
+# Definido por: Issac-Maza
+# Soporta: Dictionary<string, int> edades = new Dictionary<string, int>();
+def p_declaracion_diccionario(p):
+    '''declaracion_diccionario : DICTIONARY MENOR STRING COMA INT MAYOR IDENTIFICADOR IGUAL NEW DICTIONARY MENOR STRING COMA INT MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA
+                               | DICTIONARY MENOR INT COMA INT MAYOR IDENTIFICADOR IGUAL NEW DICTIONARY MENOR INT COMA INT MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA
+                               | DICTIONARY MENOR STRING COMA INT MAYOR IDENTIFICADOR PUNTO_COMA
+                               | DICTIONARY MENOR INT COMA INT MAYOR IDENTIFICADOR PUNTO_COMA'''
+    pass
+ 
+# --- 3. TIPO DE FUNCIÓN: FUNCIONES CON RETURN ---
+# Definido por: Issac-Maza
+# Soporta:
+#   int CalcularSuma(int a, int b) { return a + b; }
+#   float CalcularPromedio(float total, int cantidad) { return total / cantidad; }
+#   void MostrarResultado() { return; }
+#   int Duplicar(int n) => n*2;   (lambda)
+def p_declaracion_funcion(p):
+    '''declaracion_funcion : tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
+                           | tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+                           | VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
+                           | VOID IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER bloque
+                           | tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER FLECHA_LAMBDA expresion PUNTO_COMA'''
+    pass
+ 
+# Parámetros de una función: (int a, int b) o (float total, int cantidad)
+# Definido por: Issac-Maza
+def p_parametros(p):
+    '''parametros : parametros COMA parametro
+                  | parametro'''
+    pass
+ 
+def p_parametro(p):
+    '''parametro : tipo_primitivo IDENTIFICADOR'''
+    pass
+ 
+# Sentencia return dentro de funciones
+# Definido por: Issac-Maza
+def p_sentencia_return(p):
+    '''sentencia_return : RETURN expresion PUNTO_COMA
+                        | RETURN PUNTO_COMA'''
+    pass
+ 
+# Llamada a función como sentencia: CalcularSuma(suma, i);
+# Definido por: Issac-Maza
+def p_llamada_funcion_stmt(p):
+    '''llamada_funcion_stmt : IDENTIFICADOR PARENTESIS_IZQ argumentos PARENTESIS_DER PUNTO_COMA
+                            | IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
+    pass
+ 
+# Llamada a función dentro de expresiones: CalcularSuma(suma, i)
+# Definido por: Issac-Maza
+def p_llamada_funcion_expr(p):
+    '''llamada_funcion_expr : IDENTIFICADOR PARENTESIS_IZQ argumentos PARENTESIS_DER
+                            | IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER'''
+    pass
+ 
+# Argumentos al llamar una función
+# Definido por: Issac-Maza
+def p_argumentos(p):
+    '''argumentos : argumentos COMA expresion
+                  | expresion'''
+    pass
+ 
+# =============================================================================
+# === FIN PARTE: ISSAC MAZA ===
+# =============================================================================
 
 # =============================================================================
 # GESTIÓN DE ERRORES SINTÁCTICOS Y SISTEMA DE LOGS
@@ -180,6 +265,12 @@ def p_error(p):
     
     errores_sintacticos.append(error_msg)
     print(error_msg)
+
+# Recuperación de errores — Permite continuar después de un error hasta el siguiente ';'
+def p_sentencia_error(p):
+    '''sentencia : error PUNTO_COMA
+                | error LLAVE_DER'''
+    pass
 
 # Construir el analizador sintáctico (YACC)
 parser = yacc.yacc()
@@ -229,4 +320,4 @@ def validar_sintaxis_algoritmo(archivo_codigo, usuario_git):
 # =============================================================================
 if __name__ == "__main__":
     # Cambia "algoritmo_julio.cs" por el archivo C# que quieras testear.
-    validar_sintaxis_algoritmo("algoritmo_julio.cs", "JulioCevallos")
+    validar_sintaxis_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
