@@ -1,0 +1,12 @@
+--- LOG ANÁLISIS SINTÁCTICO ---
+Archivo analizado: algoritmos/algoritmo_sintactico_merge.cs
+Usuario Git: StevenBarzola
+Fecha y Hora: 20/06/2026 a las 19:53:30
+--------------------------------------------------
+
+ESTADO: RECHAZADO (3 errores encontrados)
+
+DETALLE DE ERRORES:
+- Error sintactico: Token inesperado 'Console' de tipo CONSOLE en la linea 181
+- Error sintactico: Token inesperado ')' de tipo PARENTESIS_DER en la linea 187
+- Error sintactico: Fin de archivo inesperado. Posible falta de ';' o '}'

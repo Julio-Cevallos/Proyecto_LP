@@ -2,10 +2,6 @@ import ply.lex as lex
 from datetime import datetime
 import os
 
-#==================================================================
-#=== INICIO PARTE: JULIO CEVALLOS - CAMBIOS POR: STEVEN BARZOLA ===
-#==================================================================
-
 # Diccionario de palabras reservadas asignadas 
 reserved= {
     'int': 'INT',
@@ -25,11 +21,11 @@ reserved= {
     'List': 'LIST',
     'Dictionary': 'DICTIONARY',
     'class': 'CLASS',
+    'Main': 'MAIN',
     'static': 'STATIC',
     'public': 'PUBLIC',
     'private': 'PRIVATE',
     'using': 'USING',
-    'namespace': 'NAMESPACE',
     'var': 'VAR',
     'Console': 'CONSOLE',
     'Write': 'WRITE',
@@ -53,7 +49,7 @@ tokens= (
     # Asignacion y Delimitadores base
     'IGUAL', 'PUNTO_COMA', 'COMA', 'PUNTO', 'PARENTESIS_IZQ', 'PARENTESIS_DER', 
     'LLAVE_IZQ', 'LLAVE_DER', 'CORCHETE_IZQ', 'CORCHETE_DER',
-    # ── AGREGADO POR ISSAC MAZA ──
+    # Declaracion Lambda
     'FLECHA_LAMBDA'
 ) + tuple(reserved.values())
 
@@ -89,20 +85,12 @@ t_LLAVE_DER = r'\}'
 t_CORCHETE_IZQ = r'\['
 t_CORCHETE_DER = r'\]'
 
-#=============================================
-#=== INICIO PARTE: ISSAC MAZA ================
-#=============================================
- 
 # Token para funciones lambda/expresion corta
 # Ejemplo: int Duplicar(int n) => n*2
 # IMPORTANTE: debe ir ANTES de t_IGUAL para que => no se tokenice como = y >
 def t_FLECHA_LAMBDA(t):
     r'=>'
     return t
- 
-#=============================================
-#==== FIN PARTE: ISSAC MAZA ==================
-#=============================================
 
 # Reglas con funciones con TOKENS complejos (con orden de prioridad)
 def t_FLOTANTE(t):
@@ -128,11 +116,6 @@ def t_IDENTIFICADOR(t):
     t.type= reserved.get(t.value, 'IDENTIFICADOR')
     return t
 
-#====================================
-#==== FIN PARTE: JULIO CEVALLOS =====
-#====================================
-
-
 #=========================================
 #=== ESTRUCTURA GENERAL DEL ANALIZADOR ===
 #=========================================
@@ -152,10 +135,6 @@ def t_COMENTARIO_MULTILINEA(t):
 def t_NUEVA_LINEA(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
-
-#======================================
-#==== FIN CAMBIOS: STEVEN BARZOLA =====
-#======================================
 
 # Regla para manejar errores
 errores_lexicos= []
@@ -209,7 +188,7 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
 #=============================================
 
 # Descomenta la línea del archivo que quieras probar
-validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
+#validar_algoritmo("algoritmo_julio.cs", "JulioCevallos")
 #validar_algoritmo("algoritmo_steven.cs", "StevenBarzola")
 #validar_algoritmo("algoritmo_IssacMaza.cs", "IssacMaza")
 #validar_algoritmo("algoritmo_clases.cs", "StevenBarzola")
