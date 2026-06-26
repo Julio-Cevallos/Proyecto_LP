@@ -17,6 +17,47 @@ precedence = (
     ('left', 'MULT', 'DIV', 'MOD'),
 )
 
+
+
+# =============================================================================
+# INFRAESTRUCTURA DE ANÁLISIS SEMÁNTICO
+# Desarrollado por: Julio Cevallos
+# =============================================================================
+
+class TablaSimbolos:
+    def __init__(self):
+        self.variables = {}  # Estructura: { nombre_var: {'tipo': tipo, 'es_arreglo': bool} }
+
+    def insertar(self, nombre, tipo, es_arreglo=False):
+        self.variables[nombre] = {'tipo': tipo, 'es_arreglo': es_arreglo}
+
+    def existe(self, nombre):
+        return nombre in self.variables
+
+    def obtener_tipo(self, nombre):
+        if self.existe(nombre):
+            return self.variables[nombre]['tipo']
+        return None
+
+    def es_arreglo(self, nombre):
+        if self.existe(nombre):
+            return self.variables[nombre]['es_arreglo']
+        return False
+
+    def limpiar(self):
+        self.variables.clear()
+
+# Inicialización de componentes globales del Semántico
+tabla_simbolos = TablaSimbolos()
+errores_semanticos = []
+
+def registrar_error_semantico(mensaje, linea):
+    error_formateado = f"Error Semántico (Línea {linea}): {mensaje}"
+    if error_formateado not in errores_semanticos:
+        errores_semanticos.append(error_formateado)
+
+
+
 # =============================================================================
 # RAÍZ Y ESTRUCTURA GLOBAL DEL COMPILADOR
 # Estructura compartida para integrar los aportes del grupo
@@ -71,28 +112,61 @@ def p_tipo_primitivo(p):
                       | CHAR
                       | STRING
                       | BOOL'''
-    pass
+    p[0] = p[1].lower() # Propaga 'int', 'float', 'char', etc.
 
 # --- 2. DECLARACIÓN Y ASIGNACIÓN ---
 # Definido por: Julio Cevallos (Soporta declaraciones simples y múltiples en una línea)
 def p_declaracion(p):
     '''declaracion : tipo_primitivo lista_declaraciones PUNTO_COMA'''
-    pass
+    tipo_base= p[1]
+    # Procesamos cada variable declarada en la línea
+    for elem in p[2]:
+        modo, nombre_var, tipo_exp, linea= elem
+        if tabla_simbolos.existe(nombre_var):
+            registrar_error_semantico(f"Redeclaración de la variable '{nombre_var}'.", linea)
+        else:
+            if modo == "asignado" and tipo_exp != "error":
+                if tipo_base != tipo_exp:
+                    # Coerción implícita permitida de int a float en C#
+                    if tipo_base == "float" and tipo_base == "int":
+                        pass
+                    else:
+                        registrar_error_semantico(f"No se puede asignar el tipo '{tipo_exp}' a una variable de tipo '{tipo_base}'.", linea)
+            # Guardamos la variable en la tabla con su tipo base correcto
+            tabla_simbolos.insertar(nombre_var, tipo_base)
 
 def p_lista_declaraciones(p):
     '''lista_declaraciones : lista_declaraciones COMA elemento_declaracion
                            | elemento_declaracion'''
-    pass
+    if len(p) == 4:
+        p[0]= p[1] + [p[3]]
+    else:
+        p[0]= [p[1]]
 
 def p_elemento_declaracion(p):
     '''elemento_declaracion : IDENTIFICADOR IGUAL expresion
                            | IDENTIFICADOR'''
-    pass
+    if len(p) == 4:
+        p[0]= ("asignado", p[1], p[3], p.lineno(1))
+    else:
+        p[0]= ("asignado", p[1], None, p.lineno(1))
 
 # Definido por: Julio Cevallos
 def p_asignacion(p):
     '''asignacion : IDENTIFICADOR IGUAL expresion PUNTO_COMA'''
-    pass
+    nombre_var= p[1]
+    tipo_exp= p[3]
+    linea= p.lineno(1)
+
+    if not tabla_simbolos.existe(nombre_var):
+        registrar_error_semantico(f"Asignación a variable no declarada '{nombre_var}'.", linea)
+    else:
+        tipo_var= tabla_simbolos.obtener_tipo(nombre_var)
+        if tipo_exp != "error" and tipo_var != tipo_exp:
+            if tipo_var == "float" and tipo_exp == "int":
+                pass
+            else:
+                registrar_error_semantico(f"No se puede asignar el tipo '{tipo_exp}' a la variable '{nombre_var}' de tipo '{tipo_var}'.", linea)
 
 # Definido por: Steven Barzola — Declaración implícita con var (ej: var x = 5;)
 def p_declaracion_var(p):
@@ -105,7 +179,8 @@ def p_declaracion_var(p):
 def p_impresion(p):
     '''impresion : CONSOLE PUNTO WRITE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA
                  | CONSOLE PUNTO WRITELINE PARENTESIS_IZQ expresion PARENTESIS_DER PUNTO_COMA'''
-    pass
+    if p[5] == "error":
+        registrar_error_semantico("La expresión en la función de impresión contiene errores semánticos.", p.lineno(3))
 
 
 # --- 4. EXPRESIONES ARITMÉTICAS, RELACIONALES Y LÓGICAS ---
@@ -124,17 +199,54 @@ def p_expresion_operaciones(p):
                  | expresion MAYOR_IGUAL expresion
                  | expresion AND expresion
                  | expresion OR expresion'''
-    pass
+    op= p.slice[2].type
+    t1= p[1]
+    t2= p[3]
+    linea= p.lineno(2)
+    
+    if t1 == "error" and t2 == "error":
+        p[0] = "error"
+        return
+    
+    # Operaciones Aritmeticas
+    if op in ["MAS", "MENOS", "MULT", "DIV", "MOD"]:
+        if t1 == "string" and op == "MAS": # Concatenacion de cadenas
+            p[0]= "string"
+        elif t1 in ["int", "float"] and t2 in ["int", "float"]:
+            p[0]= "float" if (t1 == "float" and t2== "float") else "int"
+        else:
+            registrar_error_semantico(f"Operación aritmética no válida entre los tipos '{t1}' y '{t2}'.", linea)
+            p[0]= "error"
+    
+    # Operaciones Relacionales
+    elif op in ["IGUAL_IGUAL", "DIFERENTE", "MENOR", "MENOR_IGUAL", "MAYOR", "MAYOR_IGUAL"]:
+        if(t1 in ["int", "float"] and t2 in ["int", "float"]) or (t1 == t2):
+            p[0] = "bool"
+        else:
+            registrar_error_semantico(f"Comparación lógica inválida entre tipos '{t1}' y '{t2}'.", linea)
+            p[0] = "error"
+    
+    # Operadores Logicos
+    elif op in ["AND", "OR"]:
+        if t1 == "bool" and t2 == "bool":
+            p[0] = "bool"
+        else:
+            registrar_error_semantico(f"Los operadores lógicos requieren tipos 'bool' (se recibió '{t1}' y '{t2}').", linea)
+            p[0] = "error"
 
 # Definido por: Julio Cevallos
 def p_expresion_not(p):
     '''expresion : NOT expresion'''
-    pass
+    if p[2] != "error" and p[2] != "bool":
+        registrar_error_semantico(f"El operador de negación '!' no se puede aplicar al tipo '{p[2]}'. Requiere un 'bool'.", p.lineno(1))
+        p[0]= "error"
+    else:
+        p[0]= "bool"
 
 # Definido por: Julio Cevallos
 def p_expresion_agrupacion(p):
     '''expresion : PARENTESIS_IZQ expresion PARENTESIS_DER'''
-    pass
+    p[0] = p[2]
 
 # Definido por: Julio Cevallos
 # Integración: agregada llamada_funcion_expr (Issac Maza) para soportar llamadas dentro de expresiones
@@ -148,20 +260,43 @@ def p_expresion_terminal(p):
                  | FALSE
                  | lectura_teclado
                  | llamada_funcion_expr'''
-    pass
+    tipo_token= p.slice[1].type
+
+    if tipo_token == "ENTERO":
+        p[0]= "int"
+    elif tipo_token == 'FLOTANTE':
+        p[0] = 'float'
+    elif tipo_token == 'CADENA':
+        p[0] = 'string'
+    elif tipo_token == 'CARACTER':
+        p[0] = 'char'
+    elif tipo_token in ['TRUE', 'FALSE']:
+        p[0] = 'bool'
+    elif tipo_token == 'IDENTIFICADOR':
+        nombre_var = p[1]
+        if not tabla_simbolos.existe(nombre_var):
+            registrar_error_semantico(f"Uso de variable no declarada '{nombre_var}'.", p.lineno(1))
+            p[0] = 'error'
+        else:
+            p[0] = tabla_simbolos.obtener_tipo(nombre_var)
+    elif tipo_token in ['lectura_teclado', 'llamada_funcion_expr']:
+        p[0] = p[1] if p[1] else 'string'
 
 
 # Definido por: Julio Cevallos
 def p_lectura_teclado(p):
     '''lectura_teclado : CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER'''
-    pass
+    p[0] = "string" # Console.ReadLine() siempre retorna string en C#
 
 
 # --- 5.1 ESTRUCTURA DE CONTROL ASIGNADA: BUCLE WHILE ---
 # Definido por: Julio Cevallos
 def p_bucle_while(p):
     '''bucle_while : WHILE PARENTESIS_IZQ expresion PARENTESIS_DER bloque'''
-    pass
+    tipo_condicion = p[3]
+    linea = p.lineno(1)
+    if tipo_condicion != 'error' and tipo_condicion != 'bool':
+        registrar_error_semantico(f"La condición de la instrucción 'while' requiere un tipo 'bool' (Se recibió un tipo '{tipo_condicion}').", linea)
 
 
 # Definido por: Julio Cevallos
@@ -195,7 +330,19 @@ def p_bucle_for(p):
 def p_declaracion_arreglo(p):
     '''declaracion_arreglo : tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR PUNTO_COMA
                            | tipo_primitivo CORCHETE_IZQ CORCHETE_DER IDENTIFICADOR IGUAL NEW tipo_primitivo CORCHETE_IZQ ENTERO CORCHETE_DER PUNTO_COMA'''
-    pass
+    tipo_izq = p[1]
+    nombre_arr = p[4]
+    linea = p.lineno(4)
+
+    if len(p) == 12:  # Caso de inicialización con instanciación (new)
+        tipo_der = p[7]
+        if tipo_izq != tipo_der:
+            registrar_error_semantico(f"Conflicto de tipos en arreglo. No se puede instanciar un arreglo de tipo '{tipo_izq}[]' con un constructor de '{tipo_der}[]'.", linea)
+
+    if tabla_simbolos.existe(nombre_arr):
+        registrar_error_semantico(f"El identificador de arreglo '{nombre_arr}' ya existe en el ámbito actual.", linea)
+    else:
+        tabla_simbolos.insertar(nombre_arr, tipo_izq, es_arreglo=True)
 
 
 # --- 6.2 ESTRUCTURA DE DATOS ASIGNADA: LISTAS ---
@@ -334,19 +481,17 @@ def p_error(p):
 parser = yacc.yacc()
 
 
-def validar_sintaxis_algoritmo(archivo_codigo, usuario_git):
+def generar_log_sintactico(archivo_codigo, usuario_git):
     global errores_sintacticos
     errores_sintacticos = []
 
-    if not os.path.exists(archivo_codigo):
-        print(f"Error: El archivo {archivo_codigo} no existe.")
-        return
-
-    with open(archivo_codigo, 'r', encoding='utf-8') as f:
-        data = f.read()
-
+    #if not os.path.exists(archivo_codigo):
+    #    print(f"Error: El archivo {archivo_codigo} no existe.")
+    #    return
+    #with open(archivo_codigo, 'r', encoding='utf-8') as f:
+    #    data = f.read()
     # Ejecutar el parser sobre el código de prueba
-    parser.parse(data)
+    #parser.parse(data)
 
     # Formatear el reporte de logs exigido por la rúbrica
     resultado_log = f"--- LOG ANÁLISIS SINTÁCTICO ---\n"
@@ -370,15 +515,71 @@ def validar_sintaxis_algoritmo(archivo_codigo, usuario_git):
     os.makedirs('logs', exist_ok=True)
     with open(nombre_archivo_log, 'w', encoding='utf-8') as f:
         f.write(resultado_log)
-
-    print(f"\n Pruebas completadas. El log se ha guardado en: {nombre_archivo_log}")
+    
+    print(f"\n Pruebas sintacticas completadas. El log se ha guardado en: {nombre_archivo_log}")
 
 
 # =============================================================================
-# EJECUCIÓN DE PRUEBAS DE SINTAXIS
+# Función para escribir el archivo de LOG SEMÁNTICO
+# =============================================================================
+def generar_log_semantico(archivo_codigo, usuario_git):
+    contenido_log = f"--- LOG ANÁLISIS SEMÁNTICO ---\n"
+    contenido_log += f"Archivo de código probado: {archivo_codigo}\n"
+    contenido_log += f"Desarrollador Responsable: {usuario_git}\n"
+    contenido_log += f"Fecha y Hora: {datetime.now().strftime('%d/%m/%Y a las %H:%M:%S')}\n"
+    contenido_log += "=" * 60 + "\n\n"
+
+    if errores_semanticos:
+        contenido_log += f"ESTADO DEL ANÁLISIS: RECHAZADO ({len(errores_semanticos)} errores semánticos detectados)\n\n"
+        contenido_log += "DETALLE DE INFRACCIONES DE REGLAS DE NEGOCIO:\n"
+        for error in errores_semanticos:
+            contenido_log += f"- {error}\n"
+    else:
+        contenido_log += "ESTADO: EXITOSO (0 errores semántico detectados).\n"
+
+    fecha_hora_formato = datetime.now().strftime("%d%m%Y-%Hh%M")
+    nombre_archivo_log = f"logs/semantico-{usuario_git}-{fecha_hora_formato}.txt"
+
+    os.makedirs('logs', exist_ok=True)
+    with open(nombre_archivo_log, 'w', encoding='utf-8') as f:
+        f.write(contenido_log)
+    print(f"\n Pruebas semánticas completadas. El log se ha guardado en: {nombre_archivo_log}")
+
+
+# =============================================================================
+# Función para escribir el archivo de LOG SEMÁNTICO
+# =============================================================================
+def compilar_archivo(archivo_codigo, usuario_git):
+    global errores_sintacticos, errores_semanticos
+    
+    # 1. Limpiar estados anteriores antes de una nueva prueba
+    errores_sintacticos = []
+    errores_semanticos = []
+    tabla_simbolos.limpiar()
+    
+    if not os.path.exists(archivo_codigo):
+        print(f"Error: El archivo {archivo_codigo} no existe.")
+        return
+
+    with open(archivo_codigo, 'r', encoding='utf-8') as f:
+        data = f.read()
+
+    # 2. Ejecutar la compilación (Esto corre Sintáctico y Semántico al mismo tiempo)
+    parser.parse(data)
+
+    # 3. Generar reportes por separado
+    generar_log_sintactico(archivo_codigo, usuario_git)
+    
+    # Regla de oro en compiladores: Si la sintaxis está totalmente rota, 
+    # el árbol semántico no es confiable. Sin embargo, puedes generar el log igualmente.
+    generar_log_semantico(archivo_codigo, usuario_git)
+
+
+# =============================================================================
+# EJECUCIÓN DE PRUEBAS
 # =============================================================================
 if __name__ == "__main__":
-    # validar_sintaxis_algoritmo("algoritmos/algoritmo_julio.cs", "JulioCevallos")
-    # validar_sintaxis_algoritmo("algoritmos/algoritmo_IssacMaza.cs", "IssacMaza")
-    # validar_sintaxis_algoritmo("algoritmos/algoritmo_sintactico_merge.cs", "StevenBarzola")
+    compilar_archivo("algoritmos/algoritmo_julio.cs", "JulioCevallos")
+    #compilar_archivo("algoritmos/algoritmo_IssacMaza.cs", "IssacMaza")
+    #compilar_archivo("algoritmos/algoritmo_sintactico_merge.cs", "StevenBarzola")
     print("Para que corra el programa")

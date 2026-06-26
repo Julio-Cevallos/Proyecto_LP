@@ -1,0 +1,11 @@
+--- LOG ANÁLISIS SINTÁCTICO ---
+Archivo analizado: algoritmos/algoritmo_julio.cs
+Usuario Git: JulioCevallos
+Fecha y Hora: 24/06/2026 a las 17:39:21
+--------------------------------------------------
+
+ESTADO: RECHAZADO (2 errores encontrados)
+
+DETALLE DE ERRORES:
+- Error sintactico: Token inesperado '=' de tipo IGUAL en la linea 38
+- Error sintactico: Token inesperado '}' de tipo LLAVE_DER en la linea 49

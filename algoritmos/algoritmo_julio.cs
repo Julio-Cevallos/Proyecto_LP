@@ -35,7 +35,10 @@ static void Main() {
 
     // 6. Prueba de Estructura de Control (Bucle While)
     while (a > 2) {
-        a = a + 1;
+        while (a == 2) {
+            a = a + 1;
+        }
+        a= a + 1;
     }
 
     // 7. Prueba Global: Impresión (Write/WriteLine) y Solicitud de Datos
