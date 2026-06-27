@@ -20,7 +20,6 @@ reserved= {
     'new': 'NEW',
     'List': 'LIST',
     'Dictionary': 'DICTIONARY',
-    'class': 'CLASS',
     'Main': 'MAIN',
     'static': 'STATIC',
     'public': 'PUBLIC',

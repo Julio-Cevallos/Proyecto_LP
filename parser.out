@@ -1,9 +1,5 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    CLASS
-
 Grammar
 
 Rule 0     S' -> programa
@@ -111,7 +107,6 @@ BOOL                 : 27
 CADENA               : 54
 CARACTER             : 55
 CHAR                 : 25
-CLASS                : 
 COMA                 : 29 73 74 75 75 76 76 89 93
 CONSOLE              : 35 36 61
 CORCHETE_DER         : 69 70 70

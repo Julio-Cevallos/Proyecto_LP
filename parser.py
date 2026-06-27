@@ -26,10 +26,11 @@ precedence = (
 
 class TablaSimbolos:
     def __init__(self):
-        self.variables = {}  # Estructura: { nombre_var: {'tipo': tipo, 'es_arreglo': bool} }
+        self.variables = {}  # { nombre: {'tipo': tipo, 'categoria': str} }
 
-    def insertar(self, nombre, tipo, es_arreglo=False):
-        self.variables[nombre] = {'tipo': tipo, 'es_arreglo': es_arreglo}
+    # categoria puede ser: 'variable', 'arreglo', 'lista', 'diccionario' o 'metodo'
+    def insertar(self, nombre, tipo, categoria='variable'):
+        self.variables[nombre] = {'tipo': tipo, 'categoria': categoria}
 
     def existe(self, nombre):
         return nombre in self.variables
@@ -39,10 +40,10 @@ class TablaSimbolos:
             return self.variables[nombre]['tipo']
         return None
 
-    def es_arreglo(self, nombre):
+    def obtener_categoria(self, nombre):
         if self.existe(nombre):
-            return self.variables[nombre]['es_arreglo']
-        return False
+            return self.variables[nombre]['categoria']
+        return None
 
     def limpiar(self):
         self.variables.clear()
@@ -50,6 +51,7 @@ class TablaSimbolos:
 # Inicialización de componentes globales del Semántico
 tabla_simbolos = TablaSimbolos()
 errores_semanticos = []
+tipo_retorno_actual = None  #Compartido: Steven lo pone en None (void), Issac lo pone en 'int', 'float', etc.
 
 def registrar_error_semantico(mensaje, linea):
     error_formateado = f"Error Semántico (Línea {linea}): {mensaje}"
@@ -118,7 +120,7 @@ def p_tipo_primitivo(p):
 # Definido por: Julio Cevallos (Soporta declaraciones simples y múltiples en una línea)
 def p_declaracion(p):
     '''declaracion : tipo_primitivo lista_declaraciones PUNTO_COMA'''
-    tipo_base= p[1]
+    tipo_base= p[1] #'int', 'float', 'char', etc.
     # Procesamos cada variable declarada en la línea
     for elem in p[2]:
         modo, nombre_var, tipo_exp, linea= elem
@@ -127,8 +129,8 @@ def p_declaracion(p):
         else:
             if modo == "asignado" and tipo_exp != "error":
                 if tipo_base != tipo_exp:
-                    # Coerción implícita permitida de int a float en C#
-                    if tipo_base == "float" and tipo_base == "int":
+                    # Coerción implícita permitida de int a float en C# - BugFix por Steven Barzola
+                    if tipo_base == "float" and tipo_exp == "int":
                         pass
                     else:
                         registrar_error_semantico(f"No se puede asignar el tipo '{tipo_exp}' a una variable de tipo '{tipo_base}'.", linea)
@@ -149,7 +151,7 @@ def p_elemento_declaracion(p):
     if len(p) == 4:
         p[0]= ("asignado", p[1], p[3], p.lineno(1))
     else:
-        p[0]= ("asignado", p[1], None, p.lineno(1))
+        p[0]= ("solo", p[1], None, p.lineno(1)) #BugFix para que reconozca sin inicializar (en teoria)
 
 # Definido por: Julio Cevallos
 def p_asignacion(p):
@@ -169,9 +171,20 @@ def p_asignacion(p):
                 registrar_error_semantico(f"No se puede asignar el tipo '{tipo_exp}' a la variable '{nombre_var}' de tipo '{tipo_var}'.", linea)
 
 # Definido por: Steven Barzola — Declaración implícita con var (ej: var x = 5;)
+# Regla Semántica por Steven Barzola
 def p_declaracion_var(p):
     '''declaracion_var : VAR IDENTIFICADOR IGUAL expresion PUNTO_COMA'''
-    pass
+    nombre_var = p[2]
+    tipo_inferido = p[4]
+    linea = p.lineno(2)
+
+    if tabla_simbolos.existe(nombre_var):
+        registrar_error_semantico(f"Redeclaración de la variable '{nombre_var}'.", linea)
+    else:
+        if tipo_inferido == "error":
+            registrar_error_semantico(f"No se puede inferir el tipo de '{nombre_var}' porque la expresión contiene errores.", linea)
+        else:
+            tabla_simbolos.insertar(nombre_var, tipo_inferido)
 
 
 # --- 3. REGLAS GENERALES: ENTRADA / SALIDA (I/O) ---
@@ -199,7 +212,7 @@ def p_expresion_operaciones(p):
                  | expresion MAYOR_IGUAL expresion
                  | expresion AND expresion
                  | expresion OR expresion'''
-    op= p.slice[2].type
+    op= p.slice[2].type #Para luego separar los tipos de operaciones (no es lo mismo operar un + que un <)
     t1= p[1]
     t2= p[3]
     linea= p.lineno(2)
@@ -210,7 +223,7 @@ def p_expresion_operaciones(p):
     
     # Operaciones Aritmeticas
     if op in ["MAS", "MENOS", "MULT", "DIV", "MOD"]:
-        if t1 == "string" and op == "MAS": # Concatenacion de cadenas
+        if t1 == "string" and op == "MAS": # Concatenacion de cadenas (Solo si el de la izquierda es string)
             p[0]= "string"
         elif t1 in ["int", "float"] and t2 in ["int", "float"]:
             p[0]= "float" if (t1 == "float" and t2== "float") else "int"
@@ -218,15 +231,15 @@ def p_expresion_operaciones(p):
             registrar_error_semantico(f"Operación aritmética no válida entre los tipos '{t1}' y '{t2}'.", linea)
             p[0]= "error"
     
-    # Operaciones Relacionales
+    # Operaciones Relacionales (Condicionales)
     elif op in ["IGUAL_IGUAL", "DIFERENTE", "MENOR", "MENOR_IGUAL", "MAYOR", "MAYOR_IGUAL"]:
-        if(t1 in ["int", "float"] and t2 in ["int", "float"]) or (t1 == t2):
+        if(t1 in ["int", "float"] and t2 in ["int", "float"]) or (t1 == t2): #Solo comparacion del mismo tipo (excepcion int y float)
             p[0] = "bool"
         else:
             registrar_error_semantico(f"Comparación lógica inválida entre tipos '{t1}' y '{t2}'.", linea)
             p[0] = "error"
     
-    # Operadores Logicos
+    # Operadores Logicos (Conectar Condicionales)
     elif op in ["AND", "OR"]:
         if t1 == "bool" and t2 == "bool":
             p[0] = "bool"
@@ -280,7 +293,7 @@ def p_expresion_terminal(p):
         else:
             p[0] = tabla_simbolos.obtener_tipo(nombre_var)
     elif tipo_token in ['lectura_teclado', 'llamada_funcion_expr']:
-        p[0] = p[1] if p[1] else 'string'
+        p[0] = p[1] if p[1] else 'string' # (DEJAR ASI O MODIFICAR) Por llamada_funcion_expr se pone que retorna STRING aunque no sea cierto
 
 
 # Definido por: Julio Cevallos
@@ -308,13 +321,17 @@ def p_bloque(p):
 
 
 # --- 5.2 ESTRUCTURA DE CONTROL ASIGNADA: IF/ELSE ---
-# Definido por: Steven Barzola
+# Definido por: Steven Barzola (Reglas sintácticas y semanticas)
 # Soporta: if, if/else, y else if encadenado
 def p_estructura_if(p):
     '''estructura_if : IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque
                      | IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque ELSE bloque
                      | IF PARENTESIS_IZQ expresion PARENTESIS_DER bloque ELSE estructura_if'''
-    pass
+    tipo_condicion = p[3]
+    linea = p.lineno(1)
+
+    if tipo_condicion != "error" and tipo_condicion != "bool":
+        registrar_error_semantico(f"La condición de la instrucción 'if' requiere un tipo 'bool' (Se recibió un tipo '{tipo_condicion}').", linea)
 
 
 # --- 5.3 ESTRUCTURA DE CONTROL ASIGNADA: BUCLE FOR ---
@@ -342,11 +359,11 @@ def p_declaracion_arreglo(p):
     if tabla_simbolos.existe(nombre_arr):
         registrar_error_semantico(f"El identificador de arreglo '{nombre_arr}' ya existe en el ámbito actual.", linea)
     else:
-        tabla_simbolos.insertar(nombre_arr, tipo_izq, es_arreglo=True)
+        tabla_simbolos.insertar(nombre_arr, tipo_izq, categoria='arreglo')
 
 
 # --- 6.2 ESTRUCTURA DE DATOS ASIGNADA: LISTAS ---
-# Definido por: Steven Barzola
+# Definido por: Steven Barzola (Reglas sintacticas y semanticas)
 # Soporta:
 #   List<int> numeros;
 #   List<string> nombres = new List<string>();
@@ -354,7 +371,19 @@ def p_declaracion_arreglo(p):
 def p_declaracion_lista(p):
     '''declaracion_lista : LIST MENOR tipo_primitivo MAYOR IDENTIFICADOR PUNTO_COMA
                          | LIST MENOR tipo_primitivo MAYOR IDENTIFICADOR IGUAL NEW LIST MENOR tipo_primitivo MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
-    pass
+    tipo_izq = p[3]
+    nombre_lista = p[5]
+    linea = p.lineno(5)
+
+    if len(p) == 15:
+        tipo_der = p[10]
+        if tipo_izq != tipo_der:
+            registrar_error_semantico(f"Conflicto de tipos en lista. No se puede instanciar 'List<{tipo_izq}>' con un constructor 'List<{tipo_der}>'.", linea)
+
+    if tabla_simbolos.existe(nombre_lista):
+        registrar_error_semantico(f"El identificador de lista '{nombre_lista}' ya existe en el ámbito actual.", linea)
+    else:
+        tabla_simbolos.insertar(nombre_lista, tipo_izq, categoria='lista')
 
 
 # --- 6.3 ESTRUCTURA DE DATOS ASIGNADA: DICCIONARIOS ---
@@ -378,8 +407,8 @@ def p_metodo_main(p):
     pass
 
 
-# --- 7.2 TIPO DE FUNCIÓN ASIGNADA: MÉTODOS SIN RETORNO ---
-# Definido por: Steven Barzola
+# --- 7.2 TIPO DE FUNCIÓN ASIGNADA: METODOS SIN RETORNO ---
+# Definido por: Steven Barzola (Reglas sintacticas y semanticas)
 # Soporta:
 #   void Saludar() { ... }
 #   public void Ejecutar(int x, bool flag) { ... }
@@ -390,7 +419,19 @@ def p_metodo_void(p):
     '''metodo_void : VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
                    | PUBLIC VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
                    | PRIVATE VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque'''
-    pass
+    global tipo_retorno_actual
+
+    nombre_metodo = p[2] if len(p) == 7 else p[3]
+    linea = p.lineno(2) if len(p) == 7 else p.lineno(3)
+
+    tipo_retorno_actual = None  # Caso sin retorno
+
+    if tabla_simbolos.existe(nombre_metodo):
+        registrar_error_semantico(f"El identificador de metodo '{nombre_metodo}' ya existe en el ámbito actual.", linea)
+    else:
+        tabla_simbolos.insertar(nombre_metodo, 'void', categoria='metodo')
+
+    tipo_retorno_actual = None  # Limpiar al salir
 
 
 # --- 7.3 TIPO DE FUNCIÓN ASIGNADA: FUNCIONES CON RETORNO ---
@@ -493,7 +534,7 @@ def generar_log_sintactico(archivo_codigo, usuario_git):
     # Ejecutar el parser sobre el código de prueba
     #parser.parse(data)
 
-    # Formatear el reporte de logs exigido por la rúbrica
+    # Formatear el reporte de logs
     resultado_log = f"--- LOG ANÁLISIS SINTÁCTICO ---\n"
     resultado_log += f"Archivo analizado: {archivo_codigo}\n"
     resultado_log += f"Usuario Git: {usuario_git}\n"
@@ -568,10 +609,11 @@ def compilar_archivo(archivo_codigo, usuario_git):
     parser.parse(data)
 
     # 3. Generar reportes por separado
-    generar_log_sintactico(archivo_codigo, usuario_git)
+    generar_log_sintactico(archivo_codigo, usuario_git) #Que siga funcionando bien
     
-    # Regla de oro en compiladores: Si la sintaxis está totalmente rota, 
-    # el árbol semántico no es confiable. Sin embargo, puedes generar el log igualmente.
+    # Al parecer en los compiladores, si la sintaxis está totalmente rota,
+    # el árbol semántico no es confiable. Sin embargo, se puede generar el log igualmente.
+    # TENERLO EN CUENTA para la interfaz gráfica...
     generar_log_semantico(archivo_codigo, usuario_git)
 
 
@@ -579,7 +621,7 @@ def compilar_archivo(archivo_codigo, usuario_git):
 # EJECUCIÓN DE PRUEBAS
 # =============================================================================
 if __name__ == "__main__":
-    compilar_archivo("algoritmos/algoritmo_julio.cs", "JulioCevallos")
+    #compilar_archivo("algoritmos/algoritmo_julio.cs", "JulioCevallos")
     #compilar_archivo("algoritmos/algoritmo_IssacMaza.cs", "IssacMaza")
-    #compilar_archivo("algoritmos/algoritmo_sintactico_merge.cs", "StevenBarzola")
+    compilar_archivo("algoritmos/algoritmo2_semantico_sintactico_steven.cs", "StevenBarzola")
     print("Para que corra el programa")

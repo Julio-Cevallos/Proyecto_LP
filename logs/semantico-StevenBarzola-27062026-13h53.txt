@@ -1,0 +1,36 @@
+--- LOG ANÁLISIS SEMÁNTICO ---
+Archivo de código probado: algoritmos/algoritmo_semantico_sintactico_steven.cs
+Desarrollador Responsable: StevenBarzola
+Fecha y Hora: 27/06/2026 a las 13:53:56
+============================================================
+
+ESTADO DEL ANÁLISIS: RECHAZADO (27 errores semánticos detectados)
+
+DETALLE DE INFRACCIONES DE REGLAS DE NEGOCIO:
+- Error Semántico (Línea 19): Redeclaración de la variable 'edad'.
+- Error Semántico (Línea 25): No se puede asignar el tipo 'string' a una variable de tipo 'int'.
+- Error Semántico (Línea 28): No se puede asignar el tipo 'bool' a una variable de tipo 'float'.
+- Error Semántico (Línea 38): Redeclaración de la variable 'edad'.
+- Error Semántico (Línea 50): Asignación a variable no declarada 'sueldo'.
+- Error Semántico (Línea 53): No se puede asignar el tipo 'int' a la variable 'activo' de tipo 'bool'.
+- Error Semántico (Línea 65): Operación aritmética no válida entre los tipos 'string' y 'int'.
+- Error Semántico (Línea 65): No se puede inferir el tipo de 'invalido' porque la expresión contiene errores.
+- Error Semántico (Línea 68): Operación aritmética no válida entre los tipos 'bool' y 'int'.
+- Error Semántico (Línea 68): No se puede inferir el tipo de 'otro' porque la expresión contiene errores.
+- Error Semántico (Línea 80): Comparación lógica inválida entre tipos 'string' y 'int'.
+- Error Semántico (Línea 86): Los operadores lógicos requieren tipos 'bool' (se recibió 'int' y 'bool').
+- Error Semántico (Línea 92): El operador de negación '!' no se puede aplicar al tipo 'int'. Requiere un 'bool'.
+- Error Semántico (Línea 105): Redeclaración de la variable 'estado'.
+- Error Semántico (Línea 109): La condición de la instrucción 'if' requiere un tipo 'bool' (Se recibió un tipo 'int').
+- Error Semántico (Línea 114): La condición de la instrucción 'if' requiere un tipo 'bool' (Se recibió un tipo 'string').
+- Error Semántico (Línea 122): Redeclaración de la variable 'rango'.
+- Error Semántico (Línea 124): Redeclaración de la variable 'rango'.
+- Error Semántico (Línea 136): La condición de la instrucción 'while' requiere un tipo 'bool' (Se recibió un tipo 'int').
+- Error Semántico (Línea 154): Conflicto de tipos en lista. No se puede instanciar 'List<int>' con un constructor 'List<float>'.
+- Error Semántico (Línea 157): El identificador de lista 'nombres' ya existe en el ámbito actual.
+- Error Semántico (Línea 168): Conflicto de tipos en arreglo. No se puede instanciar un arreglo de tipo 'int[]' con un constructor de 'float[]'.
+- Error Semántico (Línea 171): El identificador de arreglo 'edades' ya existe en el ámbito actual.
+- Error Semántico (Línea 183): Uso de variable no declarada 'valor'.
+- Error Semántico (Línea 183): La expresión en la función de impresión contiene errores semánticos.
+- Error Semántico (Línea 188): Redeclaración de la variable 'msg'.
+- Error Semántico (Línea 187): El identificador de metodo 'Saludar' ya existe en el ámbito actual.
