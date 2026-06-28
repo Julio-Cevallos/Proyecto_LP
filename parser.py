@@ -226,7 +226,7 @@ def p_expresion_operaciones(p):
         if t1 == "string" and op == "MAS": # Concatenacion de cadenas (Solo si el de la izquierda es string)
             p[0]= "string"
         elif t1 in ["int", "float"] and t2 in ["int", "float"]:
-            p[0]= "float" if (t1 == "float" and t2== "float") else "int"
+            p[0]= "float" if ("float" in [t1, t2]) else "int"
         else:
             registrar_error_semantico(f"Operación aritmética no válida entre los tipos '{t1}' y '{t2}'.", linea)
             p[0]= "error"
@@ -337,9 +337,29 @@ def p_estructura_if(p):
 # --- 5.3 ESTRUCTURA DE CONTROL ASIGNADA: BUCLE FOR ---
 # Definido por: Issac Maza
 # Soporta: for (int i = 0; i < 5; i = i + 1) { ... }
+#
+# REGLA SEMÁNTICA 1 — Issac Maza:
+#   La expresión condicional del 'for' debe evaluar estrictamente a tipo 'bool'.
+#   Adicionalmente, la variable de control se registra en la tabla de símbolos
+#   para que pueda ser usada dentro del bloque sin errores de "variable no declarada".
+
 def p_bucle_for(p):
     '''bucle_for : FOR PARENTESIS_IZQ tipo_primitivo IDENTIFICADOR IGUAL expresion PUNTO_COMA expresion PUNTO_COMA IDENTIFICADOR IGUAL expresion PARENTESIS_DER bloque'''
-    pass
+    tipo_var_control = p[3]       # 'int', 'string', etc.
+    nombre_var_control = p[4]     # 'i', 's', etc.
+    tipo_condicion = p[8]         # resultado de la expresión condicional (ej: bool)
+    linea = p.lineno(1)
+ 
+    # Regla semántica 1a: la condición debe ser bool
+    if tipo_condicion != 'error' and tipo_condicion != 'bool':
+        registrar_error_semantico(
+            f"La condición del bucle 'for' debe ser de tipo 'bool' "
+            f"(se recibió '{tipo_condicion}').",
+            linea
+        )
+    # Registrar variable de control para que sea visible dentro del bloque
+    # No se marca error si ya existe (puede haber varios for anidados con 'i')
+    tabla_simbolos.insertar(nombre_var_control, tipo_var_control, categoria='variable')
 
 
 # --- 6.1 ESTRUCTURA DE DATOS ASIGNADA: ARREGLOS TRADICIONALES ---
@@ -391,12 +411,44 @@ def p_declaracion_lista(p):
 # Soporta:
 #   Dictionary<string, int> edades;
 #   Dictionary<string, int> edades = new Dictionary<string, int>();
+#   Dictionary<int, int> contadores = new Dictionary<int, int>();
+#
+# REGLA SEMÁNTICA 2 — Issac Maza:
+#   Validar que el identificador del diccionario no esté ya declarado
+#   en el ámbito actual (no redeclaración). Adicionalmente, cuando se
+#   instancia con 'new', los tipos de la declaración y el constructor
+#   deben coincidir exactamente.
 def p_declaracion_diccionario(p):
     '''declaracion_diccionario : DICTIONARY MENOR STRING COMA INT MAYOR IDENTIFICADOR PUNTO_COMA
                                | DICTIONARY MENOR INT COMA INT MAYOR IDENTIFICADOR PUNTO_COMA
                                | DICTIONARY MENOR STRING COMA INT MAYOR IDENTIFICADOR IGUAL NEW DICTIONARY MENOR STRING COMA INT MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA
                                | DICTIONARY MENOR INT COMA INT MAYOR IDENTIFICADOR IGUAL NEW DICTIONARY MENOR INT COMA INT MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
-    pass
+ 
+    # Extraer tipo clave y nombre según variante (con o sin inicialización)
+    tipo_clave_izq = p[3].lower()   # 'string' o 'int'
+    nombre_dict = p[7]
+    linea = p.lineno(7)
+ 
+    # Variante con instanciación: Dictionary<K,V> nombre = new Dictionary<K,V>();
+    if len(p) == 19:
+        tipo_clave_der = p[12].lower()
+        if tipo_clave_izq != tipo_clave_der:
+            registrar_error_semantico(
+                f"Conflicto de tipos en diccionario '{nombre_dict}'. "
+                f"No se puede instanciar 'Dictionary<{tipo_clave_izq}, int>' "
+                f"con un constructor 'Dictionary<{tipo_clave_der}, int>'.",
+                linea
+            )
+ 
+    # Regla semántica 2: no redeclaración
+    if tabla_simbolos.existe(nombre_dict):
+        registrar_error_semantico(
+            f"El identificador de diccionario '{nombre_dict}' "
+            f"ya existe en el ámbito actual.",
+            linea
+        )
+    else:
+        tabla_simbolos.insertar(nombre_dict, tipo_clave_izq, categoria='diccionario')
 
 
 # --- 7.1 TIPO DE FUNCIÓN ASIGNADA: METODO MAIN ESTRUCTURAL ---
@@ -441,33 +493,109 @@ def p_metodo_void(p):
 #   float CalcularPromedio(float total, int cantidad) { return total / cantidad; }
 #   int Duplicar(int n) => n*2;   (expresión lambda)
 # Nota: alternativas VOID excluidas, cubiertas por p_metodo_void (Steven Barzola)
+# Regla Semántica 3a — Issac Maza:
+#   Registrar la función en la tabla de símbolos con su tipo de retorno.
+#   Marcar tipo_retorno_actual para que p_sentencia_return lo valide.
+#   Para funciones lambda (=>), validar directamente el tipo de la expresión.
 def p_declaracion_funcion(p):
     '''declaracion_funcion : tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
                            | tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER FLECHA_LAMBDA expresion PUNTO_COMA'''
-    pass
+    global tipo_retorno_actual
+
+    tipo_retorno = p[1]
+    nombre_func = p[2]
+    linea = p.lineno(2)
+
+    # Registrar la función en la tabla de símbolos
+    if tabla_simbolos.existe(nombre_func):
+        registrar_error_semantico(
+            f"El identificador de función '{nombre_func}' "
+            f"ya existe en el ámbito actual.",
+            linea
+        )
+    else:
+        tabla_simbolos.insertar(nombre_func, tipo_retorno, categoria='metodo')
+
+    # Caso lambda: int Duplicar(int n) => n*2;
+    if len(p) == 9:
+        tipo_expr_lambda = p[7]
+        if tipo_expr_lambda != 'error' and tipo_expr_lambda != tipo_retorno:
+            if not (tipo_retorno == 'float' and tipo_expr_lambda == 'int'):
+                registrar_error_semantico(
+                    f"La expresión lambda de '{nombre_func}' retorna '{tipo_expr_lambda}' "
+                    f"pero la función declara retornar '{tipo_retorno}'.",
+                    linea
+                )
+        # Lambda no tiene bloque, limpiar después de validar
+        tipo_retorno_actual = None
+    else:
+        # Función con bloque: marcar tipo esperado ANTES de procesar el bloque
+        # NOTA: En LALR el bloque ya fue procesado cuando llegamos aquí,
+        # por eso tipo_retorno_actual se setea para la SIGUIENTE función.
+        # La limitación real es que PLY procesa bottom-up.
+        # La solución parcial: al menos registramos para detectar returns sueltos.
+        tipo_retorno_actual = None  # Limpiar al salir del bloque
 
 
-# Sentencia return — Definido por: Issac Maza
+# Regla Semantica 3b Sentencia return — Definido por: Issac Maza
+#   Validar que el tipo del valor retornado por 'return' coincida con el tipo
+#   declarado en la firma de la función actualmente en procesamiento.
+#   En funciones void (tipo_retorno_actual == None), 'return expr;' es un error.
 def p_sentencia_return(p):
     '''sentencia_return : RETURN expresion PUNTO_COMA
                         | RETURN PUNTO_COMA'''
-    pass
+    global tipo_retorno_actual
+    linea = p.lineno(1)
+ 
+    # Caso: return con valor (RETURN expresion PUNTO_COMA)
+    if len(p) == 4:
+        tipo_retornado = p[2]
+ 
+        if tipo_retorno_actual is None:
+            # Estamos en un void o fuera de función: no se esperaba valor
+            registrar_error_semantico(
+                "Sentencia 'return' con valor en un método que no retorna ningun tipo (void) o fuera de una función.",
+                linea
+            )
+        elif tipo_retornado != 'error' and tipo_retornado != tipo_retorno_actual:
+            # Coerción implícita int → float permitida
+            if not (tipo_retorno_actual == 'float' and tipo_retornado == 'int'):
+                registrar_error_semantico(
+                    f"Tipo de retorno incorrecto: la función declara retornar "
+                    f"'{tipo_retorno_actual}' pero se encontró '{tipo_retornado}'.",
+                    linea
+                )
 
 
 # Llamada a función como sentencia — Definido por: Issac Maza
 # Ej: LimpiarPantalla(); o CalcularSuma(a, b);
+#Modificado por Issac Maza
 def p_llamada_funcion_stmt(p):
     '''llamada_funcion_stmt : IDENTIFICADOR PARENTESIS_IZQ argumentos PARENTESIS_DER PUNTO_COMA
                             | IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
-    pass
+    nombre_func = p[1]
+    linea = p.lineno(1)
+    if not tabla_simbolos.existe(nombre_func):
+        registrar_error_semantico(
+            f"Llamada a función no declarada '{nombre_func}'.", linea
+        )
 
 
 # Llamada a función dentro de expresiones — Definido por: Issac Maza
 # Ej: int x = CalcularSuma(a, b);
+#Modificado por Issac Maza
 def p_llamada_funcion_expr(p):
     '''llamada_funcion_expr : IDENTIFICADOR PARENTESIS_IZQ argumentos PARENTESIS_DER
                             | IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER'''
-    pass
+    nombre_func = p[1]
+    linea = p.lineno(1)
+    if tabla_simbolos.existe(nombre_func):
+        p[0] = tabla_simbolos.obtener_tipo(nombre_func)
+    else:
+        registrar_error_semantico(
+            f"Llamada a función no declarada '{nombre_func}'.", linea
+        )
+        p[0] = 'error'
 
 
 # Argumentos al llamar una función — Definido por: Issac Maza
@@ -480,12 +608,13 @@ def p_argumentos(p):
 # --- REGLAS DE PARÁMETROS (compartidas por metodo_void y declaracion_funcion) ---
 # Estructura base: Steven Barzola (lista_parametros + empty)
 # Reutilizada por: Issac Maza
+#tiene pass, correcto. La semántica está en p_parametro.
 def p_parametros(p):
     '''parametros : lista_parametros
                   | empty'''
     pass
 
-
+#tiene pass, correcto. La semántica está en p_parametro.
 def p_lista_parametros(p):
     '''lista_parametros : lista_parametros COMA parametro
                         | parametro'''
@@ -494,7 +623,9 @@ def p_lista_parametros(p):
 
 def p_parametro(p):
     '''parametro : tipo_primitivo IDENTIFICADOR'''
-    pass
+    # Registrar parametro como variable para que sea visible dentro del bloque
+    # Definido por: Issac Maza
+    tabla_simbolos.insertar(p[2], p[1], categoria='variable')
 
 
 def p_empty(p):
@@ -622,6 +753,6 @@ def compilar_archivo(archivo_codigo, usuario_git):
 # =============================================================================
 if __name__ == "__main__":
     #compilar_archivo("algoritmos/algoritmo_julio.cs", "JulioCevallos")
-    #compilar_archivo("algoritmos/algoritmo_IssacMaza.cs", "IssacMaza")
-    compilar_archivo("algoritmos/algoritmo2_semantico_sintactico_steven.cs", "StevenBarzola")
+    compilar_archivo("algoritmos/algoritmo_semantico_IssacMaza.cs", "IssacMaza")
+    #compilar_archivo("algoritmos/algoritmo2_semantico_sintactico_steven.cs", "StevenBarzola")
     print("Para que corra el programa")

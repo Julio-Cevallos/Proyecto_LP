@@ -1,0 +1,20 @@
+--- LOG ANÁLISIS SEMÁNTICO ---
+Archivo de código probado: algoritmos/algoritmo_semantico_IssacMaza.cs
+Desarrollador Responsable: IssacMaza
+Fecha y Hora: 28/06/2026 a las 18:29:26
+============================================================
+
+ESTADO DEL ANÁLISIS: RECHAZADO (11 errores semánticos detectados)
+
+DETALLE DE INFRACCIONES DE REGLAS DE NEGOCIO:
+- Error Semántico (Línea 12): Sentencia 'return' con valor en un método que no retorna ningun tipo (void) o fuera de una función.
+- Error Semántico (Línea 17): Sentencia 'return' con valor en un método que no retorna ningun tipo (void) o fuera de una función.
+- Error Semántico (Línea 33): Uso de variable no declarada 'i'.
+- Error Semántico (Línea 33): Comparación lógica inválida entre tipos 'error' y 'int'.
+- Error Semántico (Línea 33): Operación aritmética no válida entre los tipos 'error' y 'int'.
+- Error Semántico (Línea 34): Uso de variable no declarada 'i'.
+- Error Semántico (Línea 55): Sentencia 'return' con valor en un método que no retorna ningun tipo (void) o fuera de una función.
+- Error Semántico (Línea 60): Uso de variable no declarada 'j'.
+- Error Semántico (Línea 60): Operación aritmética no válida entre los tipos 'error' y 'int'.
+- Error Semántico (Línea 60): La condición del bucle 'for' debe ser de tipo 'bool' (se recibió 'int').
+- Error Semántico (Línea 66): El identificador de diccionario 'edades' ya existe en el ámbito actual.
