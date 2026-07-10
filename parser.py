@@ -1,4 +1,5 @@
 import ply.yacc as yacc
+import lexer
 from lexer import tokens
 from datetime import datetime
 import os
@@ -16,7 +17,6 @@ precedence = (
     ('left', 'MAS', 'MENOS'),
     ('left', 'MULT', 'DIV', 'MOD'),
 )
-
 
 
 # =============================================================================
@@ -48,16 +48,17 @@ class TablaSimbolos:
     def limpiar(self):
         self.variables.clear()
 
+
 # Inicialización de componentes globales del Semántico
 tabla_simbolos = TablaSimbolos()
 errores_semanticos = []
-tipo_retorno_actual = None  #Compartido: Steven lo pone en None (void), Issac lo pone en 'int', 'float', etc.
+tipo_retorno_actual = None  # Compartido: Steven lo pone en None (void), Issac lo pone en 'int', 'float', etc.
+
 
 def registrar_error_semantico(mensaje, linea):
     error_formateado = f"Error Semántico (Línea {linea}): {mensaje}"
     if error_formateado not in errores_semanticos:
         errores_semanticos.append(error_formateado)
-
 
 
 # =============================================================================
@@ -69,15 +70,18 @@ def p_programa(p):
                 | lista_sentencias'''
     p[0] = p[1]
 
+
 # Definido por: Steven Barzola — Para importar con using (ej: using System;)
 def p_directiva_using(p):
     '''directiva_using : USING IDENTIFICADOR PUNTO_COMA'''
     pass
 
+
 def p_lista_sentencias(p):
     '''lista_sentencias : sentencia lista_sentencias
                        | sentencia'''
     pass
+
 
 # Fusión de sentencias por parte todos los integrantes
 def p_sentencia(p):
@@ -106,6 +110,7 @@ def p_sentencia_error(p):
                  | error LLAVE_DER'''
     pass
 
+
 # --- 1. BASE DEL LENGUAJE: TIPOS PRIMITIVOS ---
 # Definido por: Julio Cevallos
 def p_tipo_primitivo(p):
@@ -114,16 +119,17 @@ def p_tipo_primitivo(p):
                       | CHAR
                       | STRING
                       | BOOL'''
-    p[0] = p[1].lower() # Propaga 'int', 'float', 'char', etc.
+    p[0] = p[1].lower()  # Propaga 'int', 'float', 'char', etc.
+
 
 # --- 2. DECLARACIÓN Y ASIGNACIÓN ---
 # Definido por: Julio Cevallos (Soporta declaraciones simples y múltiples en una línea)
 def p_declaracion(p):
     '''declaracion : tipo_primitivo lista_declaraciones PUNTO_COMA'''
-    tipo_base= p[1] #'int', 'float', 'char', etc.
+    tipo_base = p[1]  # 'int', 'float', 'char', etc.
     # Procesamos cada variable declarada en la línea
     for elem in p[2]:
-        modo, nombre_var, tipo_exp, linea= elem
+        modo, nombre_var, tipo_exp, linea = elem
         if tabla_simbolos.existe(nombre_var):
             registrar_error_semantico(f"Redeclaración de la variable '{nombre_var}'.", linea)
         else:
@@ -133,42 +139,49 @@ def p_declaracion(p):
                     if tipo_base == "float" and tipo_exp == "int":
                         pass
                     else:
-                        registrar_error_semantico(f"No se puede asignar el tipo '{tipo_exp}' a una variable de tipo '{tipo_base}'.", linea)
+                        registrar_error_semantico(
+                            f"No se puede asignar el tipo '{tipo_exp}' a una variable de tipo '{tipo_base}'.", linea)
             # Guardamos la variable en la tabla con su tipo base correcto
             tabla_simbolos.insertar(nombre_var, tipo_base)
+
 
 def p_lista_declaraciones(p):
     '''lista_declaraciones : lista_declaraciones COMA elemento_declaracion
                            | elemento_declaracion'''
     if len(p) == 4:
-        p[0]= p[1] + [p[3]]
+        p[0] = p[1] + [p[3]]
     else:
-        p[0]= [p[1]]
+        p[0] = [p[1]]
+
 
 def p_elemento_declaracion(p):
     '''elemento_declaracion : IDENTIFICADOR IGUAL expresion
                            | IDENTIFICADOR'''
     if len(p) == 4:
-        p[0]= ("asignado", p[1], p[3], p.lineno(1))
+        p[0] = ("asignado", p[1], p[3], p.lineno(1))
     else:
-        p[0]= ("solo", p[1], None, p.lineno(1)) #BugFix para que reconozca sin inicializar (en teoria)
+        p[0] = ("solo", p[1], None, p.lineno(1))  # BugFix para que reconozca sin inicializar (en teoria)
+
 
 # Definido por: Julio Cevallos
 def p_asignacion(p):
     '''asignacion : IDENTIFICADOR IGUAL expresion PUNTO_COMA'''
-    nombre_var= p[1]
-    tipo_exp= p[3]
-    linea= p.lineno(1)
+    nombre_var = p[1]
+    tipo_exp = p[3]
+    linea = p.lineno(1)
 
     if not tabla_simbolos.existe(nombre_var):
         registrar_error_semantico(f"Asignación a variable no declarada '{nombre_var}'.", linea)
     else:
-        tipo_var= tabla_simbolos.obtener_tipo(nombre_var)
+        tipo_var = tabla_simbolos.obtener_tipo(nombre_var)
         if tipo_exp != "error" and tipo_var != tipo_exp:
             if tipo_var == "float" and tipo_exp == "int":
                 pass
             else:
-                registrar_error_semantico(f"No se puede asignar el tipo '{tipo_exp}' a la variable '{nombre_var}' de tipo '{tipo_var}'.", linea)
+                registrar_error_semantico(
+                    f"No se puede asignar el tipo '{tipo_exp}' a la variable '{nombre_var}' de tipo '{tipo_var}'.",
+                    linea)
+
 
 # Definido por: Steven Barzola — Declaración implícita con var (ej: var x = 5;)
 # Regla Semántica por Steven Barzola
@@ -182,7 +195,8 @@ def p_declaracion_var(p):
         registrar_error_semantico(f"Redeclaración de la variable '{nombre_var}'.", linea)
     else:
         if tipo_inferido == "error":
-            registrar_error_semantico(f"No se puede inferir el tipo de '{nombre_var}' porque la expresión contiene errores.", linea)
+            registrar_error_semantico(
+                f"No se puede inferir el tipo de '{nombre_var}' porque la expresión contiene errores.", linea)
         else:
             tabla_simbolos.insertar(nombre_var, tipo_inferido)
 
@@ -212,54 +226,60 @@ def p_expresion_operaciones(p):
                  | expresion MAYOR_IGUAL expresion
                  | expresion AND expresion
                  | expresion OR expresion'''
-    op= p.slice[2].type #Para luego separar los tipos de operaciones (no es lo mismo operar un + que un <)
-    t1= p[1]
-    t2= p[3]
-    linea= p.lineno(2)
-    
+    op = p.slice[2].type  # Para luego separar los tipos de operaciones (no es lo mismo operar un + que un <)
+    t1 = p[1]
+    t2 = p[3]
+    linea = p.lineno(2)
+
     if t1 == "error" and t2 == "error":
         p[0] = "error"
         return
-    
+
     # Operaciones Aritmeticas
     if op in ["MAS", "MENOS", "MULT", "DIV", "MOD"]:
-        if t1 == "string" and op == "MAS": # Concatenacion de cadenas (Solo si el de la izquierda es string)
-            p[0]= "string"
+        if t1 == "string" and op == "MAS":  # Concatenacion de cadenas (Solo si el de la izquierda es string)
+            p[0] = "string"
         elif t1 in ["int", "float"] and t2 in ["int", "float"]:
-            p[0]= "float" if ("float" in [t1, t2]) else "int"
+            p[0] = "float" if ("float" in [t1, t2]) else "int"
         else:
             registrar_error_semantico(f"Operación aritmética no válida entre los tipos '{t1}' y '{t2}'.", linea)
-            p[0]= "error"
-    
+            p[0] = "error"
+
     # Operaciones Relacionales (Condicionales)
     elif op in ["IGUAL_IGUAL", "DIFERENTE", "MENOR", "MENOR_IGUAL", "MAYOR", "MAYOR_IGUAL"]:
-        if(t1 in ["int", "float"] and t2 in ["int", "float"]) or (t1 == t2): #Solo comparacion del mismo tipo (excepcion int y float)
+        if (t1 in ["int", "float"] and t2 in ["int", "float"]) or (
+                t1 == t2):  # Solo comparacion del mismo tipo (excepcion int y float)
             p[0] = "bool"
         else:
             registrar_error_semantico(f"Comparación lógica inválida entre tipos '{t1}' y '{t2}'.", linea)
             p[0] = "error"
-    
+
     # Operadores Logicos (Conectar Condicionales)
     elif op in ["AND", "OR"]:
         if t1 == "bool" and t2 == "bool":
             p[0] = "bool"
         else:
-            registrar_error_semantico(f"Los operadores lógicos requieren tipos 'bool' (se recibió '{t1}' y '{t2}').", linea)
+            registrar_error_semantico(f"Los operadores lógicos requieren tipos 'bool' (se recibió '{t1}' y '{t2}').",
+                                      linea)
             p[0] = "error"
+
 
 # Definido por: Julio Cevallos
 def p_expresion_not(p):
     '''expresion : NOT expresion'''
     if p[2] != "error" and p[2] != "bool":
-        registrar_error_semantico(f"El operador de negación '!' no se puede aplicar al tipo '{p[2]}'. Requiere un 'bool'.", p.lineno(1))
-        p[0]= "error"
+        registrar_error_semantico(
+            f"El operador de negación '!' no se puede aplicar al tipo '{p[2]}'. Requiere un 'bool'.", p.lineno(1))
+        p[0] = "error"
     else:
-        p[0]= "bool"
+        p[0] = "bool"
+
 
 # Definido por: Julio Cevallos
 def p_expresion_agrupacion(p):
     '''expresion : PARENTESIS_IZQ expresion PARENTESIS_DER'''
     p[0] = p[2]
+
 
 # Definido por: Julio Cevallos
 # Integración: agregada llamada_funcion_expr (Issac Maza) para soportar llamadas dentro de expresiones
@@ -273,10 +293,10 @@ def p_expresion_terminal(p):
                  | FALSE
                  | lectura_teclado
                  | llamada_funcion_expr'''
-    tipo_token= p.slice[1].type
+    tipo_token = p.slice[1].type
 
     if tipo_token == "ENTERO":
-        p[0]= "int"
+        p[0] = "int"
     elif tipo_token == 'FLOTANTE':
         p[0] = 'float'
     elif tipo_token == 'CADENA':
@@ -293,13 +313,14 @@ def p_expresion_terminal(p):
         else:
             p[0] = tabla_simbolos.obtener_tipo(nombre_var)
     elif tipo_token in ['lectura_teclado', 'llamada_funcion_expr']:
-        p[0] = p[1] if p[1] else 'string' # (DEJAR ASI O MODIFICAR) Por llamada_funcion_expr se pone que retorna STRING aunque no sea cierto
+        p[0] = p[1] if p[
+            1] else 'string'  # (DEJAR ASI O MODIFICAR) Por llamada_funcion_expr se pone que retorna STRING aunque no sea cierto
 
 
 # Definido por: Julio Cevallos
 def p_lectura_teclado(p):
     '''lectura_teclado : CONSOLE PUNTO READLINE PARENTESIS_IZQ PARENTESIS_DER'''
-    p[0] = "string" # Console.ReadLine() siempre retorna string en C#
+    p[0] = "string"  # Console.ReadLine() siempre retorna string en C#
 
 
 # --- 5.1 ESTRUCTURA DE CONTROL ASIGNADA: BUCLE WHILE ---
@@ -309,7 +330,9 @@ def p_bucle_while(p):
     tipo_condicion = p[3]
     linea = p.lineno(1)
     if tipo_condicion != 'error' and tipo_condicion != 'bool':
-        registrar_error_semantico(f"La condición de la instrucción 'while' requiere un tipo 'bool' (Se recibió un tipo '{tipo_condicion}').", linea)
+        registrar_error_semantico(
+            f"La condición de la instrucción 'while' requiere un tipo 'bool' (Se recibió un tipo '{tipo_condicion}').",
+            linea)
 
 
 # Definido por: Julio Cevallos
@@ -331,7 +354,9 @@ def p_estructura_if(p):
     linea = p.lineno(1)
 
     if tipo_condicion != "error" and tipo_condicion != "bool":
-        registrar_error_semantico(f"La condición de la instrucción 'if' requiere un tipo 'bool' (Se recibió un tipo '{tipo_condicion}').", linea)
+        registrar_error_semantico(
+            f"La condición de la instrucción 'if' requiere un tipo 'bool' (Se recibió un tipo '{tipo_condicion}').",
+            linea)
 
 
 # --- 5.3 ESTRUCTURA DE CONTROL ASIGNADA: BUCLE FOR ---
@@ -345,11 +370,11 @@ def p_estructura_if(p):
 
 def p_bucle_for(p):
     '''bucle_for : FOR PARENTESIS_IZQ tipo_primitivo IDENTIFICADOR IGUAL expresion PUNTO_COMA expresion PUNTO_COMA IDENTIFICADOR IGUAL expresion PARENTESIS_DER bloque'''
-    tipo_var_control = p[3]       # 'int', 'string', etc.
-    nombre_var_control = p[4]     # 'i', 's', etc.
-    tipo_condicion = p[8]         # resultado de la expresión condicional (ej: bool)
+    tipo_var_control = p[3]  # 'int', 'string', etc.
+    nombre_var_control = p[4]  # 'i', 's', etc.
+    tipo_condicion = p[8]  # resultado de la expresión condicional (ej: bool)
     linea = p.lineno(1)
- 
+
     # Regla semántica 1a: la condición debe ser bool
     if tipo_condicion != 'error' and tipo_condicion != 'bool':
         registrar_error_semantico(
@@ -374,7 +399,9 @@ def p_declaracion_arreglo(p):
     if len(p) == 12:  # Caso de inicialización con instanciación (new)
         tipo_der = p[7]
         if tipo_izq != tipo_der:
-            registrar_error_semantico(f"Conflicto de tipos en arreglo. No se puede instanciar un arreglo de tipo '{tipo_izq}[]' con un constructor de '{tipo_der}[]'.", linea)
+            registrar_error_semantico(
+                f"Conflicto de tipos en arreglo. No se puede instanciar un arreglo de tipo '{tipo_izq}[]' con un constructor de '{tipo_der}[]'.",
+                linea)
 
     if tabla_simbolos.existe(nombre_arr):
         registrar_error_semantico(f"El identificador de arreglo '{nombre_arr}' ya existe en el ámbito actual.", linea)
@@ -398,7 +425,9 @@ def p_declaracion_lista(p):
     if len(p) == 15:
         tipo_der = p[10]
         if tipo_izq != tipo_der:
-            registrar_error_semantico(f"Conflicto de tipos en lista. No se puede instanciar 'List<{tipo_izq}>' con un constructor 'List<{tipo_der}>'.", linea)
+            registrar_error_semantico(
+                f"Conflicto de tipos en lista. No se puede instanciar 'List<{tipo_izq}>' con un constructor 'List<{tipo_der}>'.",
+                linea)
 
     if tabla_simbolos.existe(nombre_lista):
         registrar_error_semantico(f"El identificador de lista '{nombre_lista}' ya existe en el ámbito actual.", linea)
@@ -423,12 +452,12 @@ def p_declaracion_diccionario(p):
                                | DICTIONARY MENOR INT COMA INT MAYOR IDENTIFICADOR PUNTO_COMA
                                | DICTIONARY MENOR STRING COMA INT MAYOR IDENTIFICADOR IGUAL NEW DICTIONARY MENOR STRING COMA INT MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA
                                | DICTIONARY MENOR INT COMA INT MAYOR IDENTIFICADOR IGUAL NEW DICTIONARY MENOR INT COMA INT MAYOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
- 
+
     # Extraer tipo clave y nombre según variante (con o sin inicialización)
-    tipo_clave_izq = p[3].lower()   # 'string' o 'int'
+    tipo_clave_izq = p[3].lower()  # 'string' o 'int'
     nombre_dict = p[7]
     linea = p.lineno(7)
- 
+
     # Variante con instanciación: Dictionary<K,V> nombre = new Dictionary<K,V>();
     if len(p) == 19:
         tipo_clave_der = p[12].lower()
@@ -439,7 +468,7 @@ def p_declaracion_diccionario(p):
                 f"con un constructor 'Dictionary<{tipo_clave_der}, int>'.",
                 linea
             )
- 
+
     # Regla semántica 2: no redeclaración
     if tabla_simbolos.existe(nombre_dict):
         registrar_error_semantico(
@@ -454,9 +483,17 @@ def p_declaracion_diccionario(p):
 # --- 7.1 TIPO DE FUNCIÓN ASIGNADA: METODO MAIN ESTRUCTURAL ---
 # Definido por: Julio Cevallos
 # Main quemado como token reservado (Steven Barzola) para mayor precisión
+# FIX (bottom-up / tipo_retorno_actual): se separa la cabecera del bloque.
+def p_cabecera_main(p):
+    '''cabecera_main : STATIC VOID MAIN PARENTESIS_IZQ PARENTESIS_DER'''
+    global tipo_retorno_actual
+    tipo_retorno_actual = None  # Main es void: cualquier 'return valor;' adentro debe marcarse como error
+
+
 def p_metodo_main(p):
-    '''metodo_main : STATIC VOID MAIN PARENTESIS_IZQ PARENTESIS_DER bloque'''
-    pass
+    '''metodo_main : cabecera_main bloque'''
+    global tipo_retorno_actual
+    tipo_retorno_actual = None  # Limpiar al salir del bloque
 
 
 # --- 7.2 TIPO DE FUNCIÓN ASIGNADA: METODOS SIN RETORNO ---
@@ -467,23 +504,29 @@ def p_metodo_main(p):
 #   private void Limpiar() { ... }
 # Nota: las alternativas VOID de p_declaracion_funcion de Isaac se omiten
 # aquí ya que esta regla las cubre con soporte adicional de PUBLIC/PRIVATE
-def p_metodo_void(p):
-    '''metodo_void : VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
-                   | PUBLIC VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
-                   | PRIVATE VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque'''
+#
+# FIX (bottom-up / tipo_retorno_actual)
+def p_cabecera_metodo_void(p):
+    '''cabecera_metodo_void : VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER
+                             | PUBLIC VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER
+                             | PRIVATE VOID IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER'''
     global tipo_retorno_actual
 
-    nombre_metodo = p[2] if len(p) == 7 else p[3]
-    linea = p.lineno(2) if len(p) == 7 else p.lineno(3)
-
-    tipo_retorno_actual = None  # Caso sin retorno
+    nombre_metodo = p[2] if len(p) == 6 else p[3]
+    linea = p.lineno(2) if len(p) == 6 else p.lineno(3)
 
     if tabla_simbolos.existe(nombre_metodo):
         registrar_error_semantico(f"El identificador de metodo '{nombre_metodo}' ya existe en el ámbito actual.", linea)
     else:
         tabla_simbolos.insertar(nombre_metodo, 'void', categoria='metodo')
 
-    tipo_retorno_actual = None  # Limpiar al salir
+    tipo_retorno_actual = None  # Caso sin retorno
+
+
+def p_metodo_void(p):
+    '''metodo_void : cabecera_metodo_void bloque'''
+    global tipo_retorno_actual
+    tipo_retorno_actual = None  # Limpiar al salir del bloque
 
 
 # --- 7.3 TIPO DE FUNCIÓN ASIGNADA: FUNCIONES CON RETORNO ---
@@ -497,16 +540,16 @@ def p_metodo_void(p):
 #   Registrar la función en la tabla de símbolos con su tipo de retorno.
 #   Marcar tipo_retorno_actual para que p_sentencia_return lo valide.
 #   Para funciones lambda (=>), validar directamente el tipo de la expresión.
-def p_declaracion_funcion(p):
-    '''declaracion_funcion : tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER bloque
-                           | tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER FLECHA_LAMBDA expresion PUNTO_COMA'''
+#
+# FIX (bottom-up / tipo_retorno_actual)
+def p_cabecera_declaracion_funcion(p):
+    '''cabecera_declaracion_funcion : tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER'''
     global tipo_retorno_actual
 
     tipo_retorno = p[1]
     nombre_func = p[2]
     linea = p.lineno(2)
 
-    # Registrar la función en la tabla de símbolos
     if tabla_simbolos.existe(nombre_func):
         registrar_error_semantico(
             f"El identificador de función '{nombre_func}' "
@@ -516,25 +559,44 @@ def p_declaracion_funcion(p):
     else:
         tabla_simbolos.insertar(nombre_func, tipo_retorno, categoria='metodo')
 
-    # Caso lambda: int Duplicar(int n) => n*2;
-    if len(p) == 9:
-        tipo_expr_lambda = p[7]
-        if tipo_expr_lambda != 'error' and tipo_expr_lambda != tipo_retorno:
-            if not (tipo_retorno == 'float' and tipo_expr_lambda == 'int'):
-                registrar_error_semantico(
-                    f"La expresión lambda de '{nombre_func}' retorna '{tipo_expr_lambda}' "
-                    f"pero la función declara retornar '{tipo_retorno}'.",
-                    linea
-                )
-        # Lambda no tiene bloque, limpiar después de validar
-        tipo_retorno_actual = None
-    else:
-        # Función con bloque: marcar tipo esperado ANTES de procesar el bloque
-        # NOTA: En LALR el bloque ya fue procesado cuando llegamos aquí,
-        # por eso tipo_retorno_actual se setea para la SIGUIENTE función.
-        # La limitación real es que PLY procesa bottom-up.
-        # La solución parcial: al menos registramos para detectar returns sueltos.
+    tipo_retorno_actual = tipo_retorno  # Fijado ANTES de entrar al bloque
+    p[0] = (tipo_retorno, nombre_func, linea)
+
+
+def p_declaracion_funcion(p):
+    '''declaracion_funcion : cabecera_declaracion_funcion bloque
+                           | tipo_primitivo IDENTIFICADOR PARENTESIS_IZQ parametros PARENTESIS_DER FLECHA_LAMBDA expresion PUNTO_COMA'''
+    global tipo_retorno_actual
+
+    if len(p) == 3:
+        # Caso función con bloque: la cabecera ya valido todo y ya se
+        # ejecutaron los 'return' del bloque contra el tipo correcto.
         tipo_retorno_actual = None  # Limpiar al salir del bloque
+        return
+
+    # Caso lambda: int Duplicar(int n) => n*2;  (no tiene bloque, se resuelve todo aqui)
+    tipo_retorno = p[1]
+    nombre_func = p[2]
+    linea = p.lineno(2)
+
+    if tabla_simbolos.existe(nombre_func):
+        registrar_error_semantico(
+            f"El identificador de función '{nombre_func}' "
+            f"ya existe en el ámbito actual.",
+            linea
+        )
+    else:
+        tabla_simbolos.insertar(nombre_func, tipo_retorno, categoria='metodo')
+
+    tipo_expr_lambda = p[7]
+    if tipo_expr_lambda != 'error' and tipo_expr_lambda != tipo_retorno:
+        if not (tipo_retorno == 'float' and tipo_expr_lambda == 'int'):
+            registrar_error_semantico(
+                f"La expresión lambda de '{nombre_func}' retorna '{tipo_expr_lambda}' "
+                f"pero la función declara retornar '{tipo_retorno}'.",
+                linea
+            )
+    tipo_retorno_actual = None
 
 
 # Regla Semantica 3b Sentencia return — Definido por: Issac Maza
@@ -546,11 +608,11 @@ def p_sentencia_return(p):
                         | RETURN PUNTO_COMA'''
     global tipo_retorno_actual
     linea = p.lineno(1)
- 
+
     # Caso: return con valor (RETURN expresion PUNTO_COMA)
     if len(p) == 4:
         tipo_retornado = p[2]
- 
+
         if tipo_retorno_actual is None:
             # Estamos en un void o fuera de función: no se esperaba valor
             registrar_error_semantico(
@@ -569,7 +631,7 @@ def p_sentencia_return(p):
 
 # Llamada a función como sentencia — Definido por: Issac Maza
 # Ej: LimpiarPantalla(); o CalcularSuma(a, b);
-#Modificado por Issac Maza
+# Modificado por Issac Maza
 def p_llamada_funcion_stmt(p):
     '''llamada_funcion_stmt : IDENTIFICADOR PARENTESIS_IZQ argumentos PARENTESIS_DER PUNTO_COMA
                             | IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER PUNTO_COMA'''
@@ -583,7 +645,7 @@ def p_llamada_funcion_stmt(p):
 
 # Llamada a función dentro de expresiones — Definido por: Issac Maza
 # Ej: int x = CalcularSuma(a, b);
-#Modificado por Issac Maza
+# Modificado por Issac Maza
 def p_llamada_funcion_expr(p):
     '''llamada_funcion_expr : IDENTIFICADOR PARENTESIS_IZQ argumentos PARENTESIS_DER
                             | IDENTIFICADOR PARENTESIS_IZQ PARENTESIS_DER'''
@@ -608,13 +670,14 @@ def p_argumentos(p):
 # --- REGLAS DE PARÁMETROS (compartidas por metodo_void y declaracion_funcion) ---
 # Estructura base: Steven Barzola (lista_parametros + empty)
 # Reutilizada por: Issac Maza
-#tiene pass, correcto. La semántica está en p_parametro.
+# tiene pass, correcto. La semántica está en p_parametro.
 def p_parametros(p):
     '''parametros : lista_parametros
                   | empty'''
     pass
 
-#tiene pass, correcto. La semántica está en p_parametro.
+
+# tiene pass, correcto. La semántica está en p_parametro.
 def p_lista_parametros(p):
     '''lista_parametros : lista_parametros COMA parametro
                         | parametro'''
@@ -657,13 +720,13 @@ def generar_log_sintactico(archivo_codigo, usuario_git):
     global errores_sintacticos
     errores_sintacticos = []
 
-    #if not os.path.exists(archivo_codigo):
+    # if not os.path.exists(archivo_codigo):
     #    print(f"Error: El archivo {archivo_codigo} no existe.")
     #    return
-    #with open(archivo_codigo, 'r', encoding='utf-8') as f:
+    # with open(archivo_codigo, 'r', encoding='utf-8') as f:
     #    data = f.read()
     # Ejecutar el parser sobre el código de prueba
-    #parser.parse(data)
+    # parser.parse(data)
 
     # Formatear el reporte de logs
     resultado_log = f"--- LOG ANÁLISIS SINTÁCTICO ---\n"
@@ -687,7 +750,7 @@ def generar_log_sintactico(archivo_codigo, usuario_git):
     os.makedirs('logs', exist_ok=True)
     with open(nombre_archivo_log, 'w', encoding='utf-8') as f:
         f.write(resultado_log)
-    
+
     print(f"\n Pruebas sintacticas completadas. El log se ha guardado en: {nombre_archivo_log}")
 
 
@@ -723,12 +786,12 @@ def generar_log_semantico(archivo_codigo, usuario_git):
 # =============================================================================
 def compilar_archivo(archivo_codigo, usuario_git):
     global errores_sintacticos, errores_semanticos
-    
+
     # 1. Limpiar estados anteriores antes de una nueva prueba
     errores_sintacticos = []
     errores_semanticos = []
     tabla_simbolos.limpiar()
-    
+
     if not os.path.exists(archivo_codigo):
         print(f"Error: El archivo {archivo_codigo} no existe.")
         return
@@ -736,12 +799,15 @@ def compilar_archivo(archivo_codigo, usuario_git):
     with open(archivo_codigo, 'r', encoding='utf-8') as f:
         data = f.read()
 
+    # FIX: Evitar acumular lineas
+    lexer.lexer.lineno = 1
+
     # 2. Ejecutar la compilación (Esto corre Sintáctico y Semántico al mismo tiempo)
     parser.parse(data)
 
     # 3. Generar reportes por separado
-    generar_log_sintactico(archivo_codigo, usuario_git) #Que siga funcionando bien
-    
+    generar_log_sintactico(archivo_codigo, usuario_git)  # Que siga funcionando bien
+
     # Al parecer en los compiladores, si la sintaxis está totalmente rota,
     # el árbol semántico no es confiable. Sin embargo, se puede generar el log igualmente.
     # TENERLO EN CUENTA para la interfaz gráfica...
@@ -752,7 +818,7 @@ def compilar_archivo(archivo_codigo, usuario_git):
 # EJECUCIÓN DE PRUEBAS
 # =============================================================================
 if __name__ == "__main__":
-    #compilar_archivo("algoritmos/algoritmo_julio.cs", "JulioCevallos")
-    compilar_archivo("algoritmos/algoritmo_semantico_IssacMaza.cs", "IssacMaza")
-    #compilar_archivo("algoritmos/algoritmo2_semantico_sintactico_steven.cs", "StevenBarzola")
+    # compilar_archivo("algoritmos/algoritmo_julio.cs", "JulioCevallos")
+    # compilar_archivo("algoritmos/algoritmo_semantico_IssacMaza.cs", "IssacMaza")
+    # compilar_archivo("algoritmos/algoritmo2_semantico_sintactico_steven.cs", "StevenBarzola")
     print("Para que corra el programa")
