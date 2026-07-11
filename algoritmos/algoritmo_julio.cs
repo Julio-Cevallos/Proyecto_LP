@@ -9,6 +9,7 @@ static void Main() {
     string nombreUsuario = "Julio_Cevallos";
     bool estadoActivo = true;
     bool estadoInactivo = false;
+    char incialUsuario= 'J';
 
     // PRUEBA FALTANTE: Operador lógico NOT (!)
     bool estadoNegado = !estadoActivo;
@@ -28,6 +29,8 @@ static void Main() {
     bool esIgual = edad == 20;
     bool esDiferente = (suma != 10);
     bool esMayorIgual = (pesoInicial >= 70.0);
+    bool esMenorEstricto = a < b;
+    bool Complejo = (edad == 20 && esMayor) || !estadoInactivo;
 
     // 5. Prueba de Estructura de Datos (Arreglos)
     int[] vec = new int[5];
