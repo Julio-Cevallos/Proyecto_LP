@@ -1,0 +1,39 @@
+---LOG ANALISIS LEXICO---
+Archivo: algoritmos/workspace_gui.cs
+
+TOKENS RECONOCIDOS:
+Token:USING, Valor: 'using', Linea: 55
+Token:IDENTIFICADOR, Valor: 'System', Linea: 55
+Token:PUNTO_COMA, Valor: ';', Linea: 55
+Token:INT, Valor: 'int', Linea: 57
+Token:IDENTIFICADOR, Valor: 'control', Linea: 57
+Token:IGUAL, Valor: '=', Linea: 57
+Token:ENTERO, Valor: '12', Linea: 57
+Token:PUNTO_COMA, Valor: ';', Linea: 57
+Token:FLOAT, Valor: 'float', Linea: 58
+Token:IDENTIFICADOR, Valor: 'umbral', Linea: 58
+Token:IGUAL, Valor: '=', Linea: 58
+Token:FLOTANTE, Valor: '24.5', Linea: 58
+Token:PUNTO_COMA, Valor: ';', Linea: 58
+Token:STRING, Valor: 'string', Linea: 59
+Token:IDENTIFICADOR, Valor: 'tag', Linea: 59
+Token:IGUAL, Valor: '=', Linea: 59
+Token:CADENA, Valor: '"Procesando"', Linea: 59
+Token:PUNTO_COMA, Valor: ';', Linea: 59
+Token:WHILE, Valor: 'while', Linea: 61
+Token:PARENTESIS_IZQ, Valor: '(', Linea: 61
+Token:IDENTIFICADOR, Valor: 'control', Linea: 61
+Token:MENOR, Valor: '<', Linea: 61
+Token:IDENTIFICADOR, Valor: 'umbral', Linea: 61
+Token:PARENTESIS_DER, Valor: ')', Linea: 61
+Token:LLAVE_IZQ, Valor: '{', Linea: 61
+Token:IDENTIFICADOR, Valor: 'control', Linea: 62
+Token:IGUAL, Valor: '=', Linea: 62
+Token:IDENTIFICADOR, Valor: 'control', Linea: 62
+Token:MAS, Valor: '+', Linea: 62
+Token:ENTERO, Valor: '2', Linea: 62
+Token:PUNTO_COMA, Valor: ';', Linea: 62
+Token:LLAVE_DER, Valor: '}', Linea: 63
+
+ERRORES LEXICOS ENCONTRADOS:
+Caracter ilegal '$' en la linea 57

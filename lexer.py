@@ -157,6 +157,7 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
     with open(archivo_codigo, 'r', encoding='utf-8') as f:
         data= f.read()
     
+    lexer.lineno= 1
     lexer.input(data)
 
     #Recolectar TOKENS

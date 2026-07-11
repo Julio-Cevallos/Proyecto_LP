@@ -1,0 +1,71 @@
+---LOG ANALISIS LEXICO---
+Archivo: algoritmos/workspace_gui.cs
+
+TOKENS RECONOCIDOS:
+Token:USING, Valor: 'using', Linea: 98
+Token:IDENTIFICADOR, Valor: 'System', Linea: 98
+Token:PUNTO_COMA, Valor: ';', Linea: 98
+Token:IDENTIFICADOR, Valor: 'namespace', Linea: 100
+Token:IDENTIFICADOR, Valor: 'AnalizadorDemo', Linea: 100
+Token:LLAVE_IZQ, Valor: '{', Linea: 100
+Token:PUBLIC, Valor: 'public', Linea: 102
+Token:IDENTIFICADOR, Valor: 'class', Linea: 102
+Token:IDENTIFICADOR, Valor: 'Calculadora', Linea: 102
+Token:LLAVE_IZQ, Valor: '{', Linea: 102
+Token:PRIVATE, Valor: 'private', Linea: 104
+Token:INT, Valor: 'int', Linea: 104
+Token:IDENTIFICADOR, Valor: 'resultado', Linea: 104
+Token:PUNTO_COMA, Valor: ';', Linea: 104
+Token:PUBLIC, Valor: 'public', Linea: 106
+Token:STATIC, Valor: 'static', Linea: 106
+Token:VOID, Valor: 'void', Linea: 106
+Token:IDENTIFICADOR, Valor: 'Sumar', Linea: 106
+Token:PARENTESIS_IZQ, Valor: '(', Linea: 106
+Token:INT, Valor: 'int', Linea: 106
+Token:IDENTIFICADOR, Valor: 'a', Linea: 106
+Token:COMA, Valor: ',', Linea: 106
+Token:INT, Valor: 'int', Linea: 106
+Token:IDENTIFICADOR, Valor: 'b', Linea: 106
+Token:PARENTESIS_DER, Valor: ')', Linea: 106
+Token:LLAVE_IZQ, Valor: '{', Linea: 106
+Token:IDENTIFICADOR, Valor: 'resultado', Linea: 107
+Token:IGUAL, Valor: '=', Linea: 107
+Token:IDENTIFICADOR, Valor: 'a', Linea: 107
+Token:MAS, Valor: '+', Linea: 107
+Token:IDENTIFICADOR, Valor: 'b', Linea: 107
+Token:PUNTO_COMA, Valor: ';', Linea: 107
+Token:RETURN, Valor: 'return', Linea: 108
+Token:IDENTIFICADOR, Valor: 'resultado', Linea: 108
+Token:PUNTO_COMA, Valor: ';', Linea: 108
+Token:LLAVE_DER, Valor: '}', Linea: 109
+Token:PRIVATE, Valor: 'private', Linea: 111
+Token:BOOL, Valor: 'bool', Linea: 111
+Token:IDENTIFICADOR, Valor: 'EsPositivo', Linea: 111
+Token:PARENTESIS_IZQ, Valor: '(', Linea: 111
+Token:FLOAT, Valor: 'float', Linea: 111
+Token:IDENTIFICADOR, Valor: 'num', Linea: 111
+Token:PARENTESIS_DER, Valor: ')', Linea: 111
+Token:LLAVE_IZQ, Valor: '{', Linea: 111
+Token:IF, Valor: 'if', Linea: 112
+Token:PARENTESIS_IZQ, Valor: '(', Linea: 112
+Token:IDENTIFICADOR, Valor: 'num', Linea: 112
+Token:MAYOR, Valor: '>', Linea: 112
+Token:ENTERO, Valor: '0', Linea: 112
+Token:PARENTESIS_DER, Valor: ')', Linea: 112
+Token:LLAVE_IZQ, Valor: '{', Linea: 112
+Token:RETURN, Valor: 'return', Linea: 113
+Token:TRUE, Valor: 'true', Linea: 113
+Token:PUNTO_COMA, Valor: ';', Linea: 113
+Token:LLAVE_DER, Valor: '}', Linea: 114
+Token:ELSE, Valor: 'else', Linea: 114
+Token:LLAVE_IZQ, Valor: '{', Linea: 114
+Token:RETURN, Valor: 'return', Linea: 115
+Token:FALSE, Valor: 'false', Linea: 115
+Token:PUNTO_COMA, Valor: ';', Linea: 115
+Token:LLAVE_DER, Valor: '}', Linea: 116
+Token:LLAVE_DER, Valor: '}', Linea: 117
+Token:LLAVE_DER, Valor: '}', Linea: 118
+Token:LLAVE_DER, Valor: '}', Linea: 119
+
+ERRORES LEXICOS ENCONTRADOS:
+Ninguno.

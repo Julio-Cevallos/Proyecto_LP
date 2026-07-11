@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-from lexer import tokens
+from lexer import tokens, lexer
 from datetime import datetime
 import os
 
@@ -217,13 +217,13 @@ def p_expresion_operaciones(p):
     t2= p[3]
     linea= p.lineno(2)
     
-    if t1 == "error" and t2 == "error":
+    if t1 == "error" or t2 == "error":
         p[0] = "error"
         return
     
     # Operaciones Aritmeticas
     if op in ["MAS", "MENOS", "MULT", "DIV", "MOD"]:
-        if t1 == "string" and op == "MAS": # Concatenacion de cadenas (Solo si el de la izquierda es string)
+        if (t1 == "string" or t2 == "string") and op == "MAS": # Concatenacion de cadenas (Solo si el de la izquierda es string)
             p[0]= "string"
         elif t1 in ["int", "float"] and t2 in ["int", "float"]:
             p[0]= "float" if ("float" in [t1, t2]) else "int"
@@ -232,11 +232,18 @@ def p_expresion_operaciones(p):
             p[0]= "error"
     
     # Operaciones Relacionales (Condicionales)
-    elif op in ["IGUAL_IGUAL", "DIFERENTE", "MENOR", "MENOR_IGUAL", "MAYOR", "MAYOR_IGUAL"]:
+    elif op in ["IGUAL_IGUAL", "DIFERENTE"]:
         if(t1 in ["int", "float"] and t2 in ["int", "float"]) or (t1 == t2): #Solo comparacion del mismo tipo (excepcion int y float)
             p[0] = "bool"
         else:
             registrar_error_semantico(f"Comparación lógica inválida entre tipos '{t1}' y '{t2}'.", linea)
+            p[0] = "error"
+
+    elif op in ["MENOR", "MENOR_IGUAL", "MAYOR", "MAYOR_IGUAL"]:
+        if(t1 in ["int", "float"] and t2 in ["int", "float"]):
+            p[0] = "bool"
+        else:
+            registrar_error_semantico(f"El operador '{op}' no se puede aplicar a los tipos '{t1}' y '{t2}'. Requiere tipos numéricos.", linea)
             p[0] = "error"
     
     # Operadores Logicos (Conectar Condicionales)
@@ -291,7 +298,12 @@ def p_expresion_terminal(p):
             registrar_error_semantico(f"Uso de variable no declarada '{nombre_var}'.", p.lineno(1))
             p[0] = 'error'
         else:
-            p[0] = tabla_simbolos.obtener_tipo(nombre_var)
+            cat = tabla_simbolos.obtener_categoria(nombre_var)
+            if cat == 'method':
+                registrar_error_semantico(f"El identificador '{nombre_var}' es un método/función y no puede usarse como variable.", p.lineno(1))
+                p[0]= 'error'
+            else:
+                p[0] = tabla_simbolos.obtener_tipo(nombre_var)
     elif tipo_token in ['lectura_teclado', 'llamada_funcion_expr']:
         p[0] = p[1] if p[1] else 'string' # (DEJAR ASI O MODIFICAR) Por llamada_funcion_expr se pone que retorna STRING aunque no sea cierto
 
@@ -736,6 +748,7 @@ def compilar_archivo(archivo_codigo, usuario_git):
     with open(archivo_codigo, 'r', encoding='utf-8') as f:
         data = f.read()
 
+    lexer.lineno= 1
     # 2. Ejecutar la compilación (Esto corre Sintáctico y Semántico al mismo tiempo)
     parser.parse(data)
 
