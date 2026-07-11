@@ -151,37 +151,43 @@ lexer= lex.lex()
 
 def validar_algoritmo(archivo_codigo, nombre_desarrollador):
     global errores_lexicos
-    errores_lexicos= []
+    errores_lexicos = []
 
-    #Leer archivos de prueba
+    # Leer archivos de prueba
     with open(archivo_codigo, 'r', encoding='utf-8') as f:
-        data= f.read()
-    
-    lexer.lineno= 1
+        data = f.read()
+
+    # FIX: lexer.lineno es un atributo persistente del objeto 'lexer'. Resetear
+    lexer.lineno = 1
     lexer.input(data)
 
-    #Recolectar TOKENS
-    resultado_log= f"---LOG ANALISIS LEXICO---\nArchivo: {archivo_codigo}\n\nTOKENS RECONOCIDOS:\n"
+    # Recolectar TOKENS
+    resultado_log = f"---LOG ANALISIS LEXICO---\nArchivo: {archivo_codigo}\n\nTOKENS RECONOCIDOS:\n"
     for tok in lexer:
         resultado_log += f"Token:{tok.type}, Valor: '{tok.value}', Linea: {tok.lineno}\n"
-    
-    #Registrar Errores
-    resultado_log+= "\nERRORES LEXICOS ENCONTRADOS:\n"
+
+    # Registrar Errores
+    resultado_log += "\nERRORES LEXICOS ENCONTRADOS:\n"
     if errores_lexicos:
         for err in errores_lexicos:
             resultado_log += err + "\n"
     else:
         resultado_log += "Ninguno.\n"
-    
-    #Generar archivo
-    fecha_hora= datetime.now().strftime("%d-%m-%Y-%Hh%M")
-    nombre_archivo= f"logs/lexico-{nombre_desarrollador}-{fecha_hora}.txt"
+
+    # Generar archivo
+    fecha_hora = datetime.now().strftime("%d-%m-%Y-%Hh%M")
+    nombre_archivo = f"logs/lexico-{nombre_desarrollador}-{fecha_hora}.txt"
 
     os.makedirs('logs', exist_ok=True)
     with open(nombre_archivo, 'w', encoding='utf-8') as f:
         f.write(resultado_log)
-    
+
     print(f"Análisis completado. Log guardado en: {nombre_archivo}")
+
+    # Se devuelve el mismo texto que se guardó en el log físico, para que
+    # quien llame a esta función (GUI) pueda mostrarlo
+    # directamente sin tener que volver a correr el lexer sobre el mismo código.
+    return resultado_log
 
 #=============================================
 #========== EJECUCICION DE PRUEBAS ===========
