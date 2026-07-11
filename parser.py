@@ -728,7 +728,7 @@ parser = yacc.yacc()
 
 def generar_log_sintactico(archivo_codigo, usuario_git):
     global errores_sintacticos
-    errores_sintacticos = []
+    #errores_sintacticos = []
 
     # if not os.path.exists(archivo_codigo):
     #    print(f"Error: El archivo {archivo_codigo} no existe.")
@@ -810,7 +810,7 @@ def compilar_archivo(archivo_codigo, usuario_git):
         data = f.read()
 
     # FIX: Evitar acumular lineas
-    lexer.lexer.lineno = 1
+    lexer.lineno = 1
 
     # 2. Ejecutar la compilación (Esto corre Sintáctico y Semántico al mismo tiempo)
     parser.parse(data)

@@ -164,13 +164,13 @@ def validar_algoritmo(archivo_codigo, nombre_desarrollador):
     # Recolectar TOKENS
     resultado_log = f"---LOG ANALISIS LEXICO---\nArchivo: {archivo_codigo}\n\nTOKENS RECONOCIDOS:\n"
     for tok in lexer:
-        resultado_log += f"Token:{tok.type}, Valor: '{tok.value}', Linea: {tok.lineno}\n"
+        resultado_log += f"Token:{tok.type:15} | Valor: '{tok.value}'; Linea: {tok.lineno}\n"
 
     # Registrar Errores
-    resultado_log += "\nERRORES LEXICOS ENCONTRADOS:\n"
+    resultado_log += "\nERRORES LEXICOS:\n"
     if errores_lexicos:
         for err in errores_lexicos:
-            resultado_log += err + "\n"
+            resultado_log += f"- {err}\n"
     else:
         resultado_log += "Ninguno.\n"
 

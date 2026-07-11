@@ -11,7 +11,7 @@ import parser
 class InterfazCompilador:
     def __init__(self, root):
         self.root = root
-        self.root.title("C# Compiler IDE - Panel de Control Semántico")
+        self.root.title("C# Compiler IDE - Panel de Control")
         self.root.geometry("1200x700")
         self.root.minsize(1000, 600)
         # Nombre por defecto para el log (Julio Cevallos)
@@ -198,7 +198,7 @@ class InterfazCompilador:
         resultado += "\nERRORES LÉXICOS:\n"
         if lexer.errores_lexicos:
             for err in lexer.errores_lexicos:
-                resultado += f"❌ {err}\n"
+                resultado += f"- {err}\n"
         else:
             resultado += "Ninguno. Sintaxis léxica correcta.\n"
 
@@ -208,7 +208,7 @@ class InterfazCompilador:
         if errores_sintacticos:
             resultado = f"ESTADO: RECHAZADO ({len(errores_sintacticos)} errores encontrados)\n\n"
             for err in errores_sintacticos:
-                resultado += f"❌ {err}\n"
+                resultado += f"- {err}\n"
         else:
             resultado = "ESTADO: EXITOSO (0 errores sintácticos detectados).\n\n"
         return resultado
@@ -225,9 +225,9 @@ class InterfazCompilador:
                 "código se procesó mediante recuperación de errores.\n\n"
             )
         if errores_semanticos:
-            resultado += f"ESTADO: RECHAZADO ({len(errores_semanticos)} infracciones de tipo/contexto)\n\n"
+            resultado += f"ESTADO: RECHAZADO ({len(errores_semanticos)} infracciones de sentido/contexto)\n\n"
             for err in errores_semanticos:
-                resultado += f"❌ {err}\n"
+                resultado += f"- {err}\n"
         else:
             resultado += "ESTADO: EXITOSO (0 errores semánticos detectados).\n\n"
         return resultado
