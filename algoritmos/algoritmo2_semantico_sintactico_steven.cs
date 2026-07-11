@@ -98,7 +98,7 @@ void Saludar() {
 }
 
 public void Mostrar(int valor, bool flag) {
-    int valor = 1; //Por ahora no se ha implementado que reconoza el parametro (variables globales)
+    int numeroEntero = 1;
     Console.WriteLine(valor);
 }
 

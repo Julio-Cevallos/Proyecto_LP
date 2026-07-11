@@ -1,22 +1,9 @@
 using System;
 
-namespace AnalizadorDemo {
+int control = 12;
+float umbral = 24.5;
+string tag = "Procesando";
 
-    public class Calculadora {
-
-        private int resultado;
-
-        public static void Sumar(int a, int b) {
-            resultado = a + b;
-            return resultado;
-        }
-
-        private bool EsPositivo(float num) {
-            if (num > 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+while (control < umbral) {
+    control = control + 2;
 }
